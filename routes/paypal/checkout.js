@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Items = require('../../models/items');
 const Order = require('../../models/orders');
+require('dotenv/config');
 // const {
 //   createPayment
 // } = require('../../jss/createPayment');
@@ -12,8 +13,8 @@ const {
 const paypal = require('paypal-rest-sdk');
 paypal.configure({
   mode: 'sandbox',
-  client_id: "AWUKhzPuHD95LRL6ld4DeIQ_19g5oioAWZBDGki5P0KVl7J69vRkm9BbCrlPvb5_vZwsG7go3_ZdSEyk",
-  client_secret: "EK32ojGuLM2ms260u3FXYkXCS0c6UsCFu4guC0f0AeUcODICNfk01Hw-lA_cfBYIrNdifcZSB2fTUNDN"
+  client_id: process.env.CLIENT_ID,
+  client_secret: process.env.CLIENT_SERECT
 });
 
 //Paypal config
