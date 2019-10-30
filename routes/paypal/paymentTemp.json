@@ -1,0 +1,41 @@
+{
+  "intent": "sale",
+  "redirect_urls": {
+    "return_url": "http://127.0.0.1:3000/checkout/process",
+    "cancel_url": "http://127.0.0.1:3000/checkout/cancel"
+  },
+  "transactions": [{
+    "amount": {
+      "total": 0,
+      "currency": "AUD",
+      "details": {
+        "subtotal": 0,
+        "shipping": 9.95,
+        "shipping_discount": 9.95
+      }
+    },
+    "description": "Flawless.",
+    "invoice_number": "",
+    "item_list": {
+      "items": [],
+      "shipping_address": {
+        "recipient_name": "",
+        "line1": "",
+        "city": "",
+        "country_code": "",
+        "postal_code": "",
+        "state": ""
+      }
+    },
+    "payment_options": {
+      "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
+    }
+  }],
+  "note_to_payer": "Contact us for any questions on your order.",
+  "payer": {
+    "payment_method": "paypal",
+    "payer_info": {
+      "email": ""
+    }
+  }
+}

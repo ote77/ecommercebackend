@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Items = require('../models/items');
-const ItemsId = require('../models/itemsId');
 const {
   nextId
 } = require('../jss/addid');

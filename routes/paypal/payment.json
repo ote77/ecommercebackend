@@ -1,0 +1,65 @@
+{
+  "intent": "sale",
+  "redirect_urls": {
+    "return_url": "http://127.0.0.1:3000/checkout/process",
+    "cancel_url": "http://127.0.0.1:3000/checkout/cancel"
+  },
+  "transactions": [{
+    "amount": {
+      "total": "362.50",
+      "currency": "AUD",
+      "details": {
+        "subtotal": "362.50",
+        "shipping": "10.00",
+        "shipping_discount": "10.00"
+      }
+    },
+    "description": "This is the payment transaction description.",
+    "invoice_number": "",
+    "custom": "John.ryan",
+    "item_list": {
+      "items": [{
+          "name": "item1",
+          "description": "Bowling Team Shirt",
+          "quantity": "5",
+          "price": "5",
+          "sku": "1",
+          "currency": "AUD"
+        },
+        {
+          "name": "item2",
+          "description": "80s Mesh Sleeveless Shirt",
+          "quantity": "30",
+          "price": "20",
+          "sku": "2",
+          "currency": "AUD"
+        },
+        {
+          "name": "discount",
+          "quantity": "1",
+          "price": "-262.5",
+          "sku": "discount",
+          "currency": "AUD"
+        }
+      ],
+      "shipping_address": {
+        "recipient_name": "John Ryan",
+        "line1": "111 First Street",
+        "city": "Bri",
+        "country_code": "AU",
+        "postal_code": "4000",
+        "state": "QLD"
+      }
+    },
+    "payment_options": {
+      "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
+    }
+  }],
+  "note_to_payer": "Contact us for any questions on your order.",
+  "payer": {
+    "payment_method": "paypal",
+    "payer_info": {
+      "email": "John.ryan@personal.example.com"
+    }
+  }
+}

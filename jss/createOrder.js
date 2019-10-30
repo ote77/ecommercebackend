@@ -25,8 +25,9 @@ const createOrder = async (items, username, res) => {
 
     if (items[i].price == stockItems.price && items[i].name == stockItems.name) {
       if (items[i].quantity <= stockItems.stock) {
+        // console.log('<------ stock ------>\n', stockItems.stock);
         //Can be pushed here to the items with price and name.
-        console.log(items[i]._id + ' pushed');
+        // console.log(items[i]._id + ' available');
       } else {
         console.log('ID-' + items[i]._id + ' No enough stock');
         throw 'ID-' + items[i]._id + ' No enough stock';
@@ -42,6 +43,7 @@ const createOrder = async (items, username, res) => {
   });
   return validatedOrder;
 };
+
 
 module.exports = {
   createOrder

@@ -12,7 +12,20 @@ var orderSchema = mongoose.Schema({
   paid: {
     type: Boolean,
     default: false
-  }
+  },
+  transactions: {
+    type: Object,
+    default: {}
+  },
+  payid: {
+    type: String,
+    default: "Unpaid"
+  },
+  paylink:{
+    type: String,
+    default: "Wait to set payment"
+  },
+  payer: Object
 });
 
 module.exports = mongoose.model('Order', orderSchema);

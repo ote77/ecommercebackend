@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Items = require('../models/items');
-const ItemsId = require('../models/itemsId');
 const Order = require('../models/orders');
 //get one order , update one order
 
@@ -21,20 +20,20 @@ router.get('/:orderId', async (req, res) => {
 });
 
 //set order to paid:true after paypal
-router.patch('/:orderId', async (req, res) => {
-  try {
-    const modifiedOrder = await Order.findByIdAndUpdate(req.params.orderId, {
-      $set: {
-        paid: true
-      }
-    });
-    // console.log(modifiedOrder);
-    res.json(modifiedOrder);
-  } catch (err) {
-    res.json({
-      message: err
-    });
-  }
-});
+// router.patch('/:orderId', async (req, res) => {
+//   try {
+//     const modifiedOrder = await Order.findByIdAndUpdate(req.params.orderId, {
+//       $set: {
+//         paid: true
+//       }
+//     });
+//     // console.log(modifiedOrder);
+//     res.json(modifiedOrder);
+//   } catch (err) {
+//     res.json({
+//       message: err
+//     });
+//   }
+// });
 
 module.exports = router;

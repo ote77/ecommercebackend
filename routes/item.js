@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Items = require('../models/items');
-const ItemsId = require('../models/itemsId');
 
 //get back an item by id.
 router.get('/:itemId', async (req, res) => {

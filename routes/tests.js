@@ -5,20 +5,18 @@ const ItemsNum = require('../models/itemsNum');
 const {
   nextId
 } = require('../jss/addid');
+const {
+  createPayment
+} = require('../jss/createPayment');
+const {
+  getTransctions
+} = require('../jss/paymentMethods');
 //get back post lists.
 
 
-router.get('/', async (req, res) => {
-  try {
-    console.log('123');
-    const id = await ItemsNum.find();
-    res.json(id);
-    console.log(id);
-  } catch (err) {
-    res.json({
-      message: err
-    });
-  }
+router.get('/:payId', async (req, res) => {
+ const transactions = await getTransctions(req.params.payId);
+ res.json(transactions);
 });
 
 

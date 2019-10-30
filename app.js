@@ -28,6 +28,7 @@ app.use('/item', require('./routes/item'));
 app.use('/order', require('./routes/order'));
 app.use('/orders', require('./routes/orders'));
 app.use('/tests', require('./routes/tests'));
+app.use('/checkout', require('./routes/paypal/checkout'));
 
 // app.use('/posts',() => {
 //   console.log('This is a middleware');
