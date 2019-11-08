@@ -3,13 +3,12 @@ const router = express.Router();
 // const Items = require('../../models/items');
 // const Order = require('../../models/orders');
 require('dotenv/config');
-// const {
-//   createPayment
-// } = require('../../jss/createPayment');
+
 const {
-  savePayid,createPayment,getTransctions,savePaid
+  savePayid,createPayment,getTransctions,setPaidToTrue,createPayment2
 } = require('../../jss/paymentMethods');
 
+//Paypal config
 const paypal = require('paypal-rest-sdk');
 paypal.configure({
   mode: 'sandbox',
@@ -17,7 +16,7 @@ paypal.configure({
   client_secret: process.env.CLIENT_SERECT
 });
 
-//Paypal config
+
 router.get('/payments/:payId', (req, res) => {
   var paymentId = req.params.payId;
   paypal.payment.get(paymentId, function(error, payment) {
@@ -29,20 +28,26 @@ router.get('/payments/:payId', (req, res) => {
   });
 });
 
+//combine stage one with stage two
+router.post('/payment', async(req, res) => {
+  console.log("payment v2");
+  var order;
+  try {
+    order = await createPayment2(req.body.items,req.body.user);
+    console.log('<------ return order ------>\n', order);
+  } catch (e) {
+    res.json({message:e});
+  }
 
-router.post('/payment', (req, res) => {
-  console.log("backend pay");
-  var create_payment_json = require('./payment.json');
-
-  console.log("2");
-  paypal.payment.create(create_payment_json, function(error, payment) {
+  paypal.payment.create(order.payment, function(error, payment) {
     if (error) {
-      throw error;
+      console.log('<------ paypal.payment.create ------>\n', error);
     } else {
-      console.log(payment);
+      console.log(payment.id,order.orderId);
       for (let link of payment.links) {
         if (link.rel === 'approval_url') {
-          console.log(typeof link.href);
+          console.log(link.href);
+          savePayid(order.orderId, payment.id,link.href);
           res.redirect(link.href);
           console.log("redirected");
         }
@@ -113,7 +118,7 @@ router.get('/process', async(req, res) => {
       console.log('<------ err/process ------>\n', error);
     } else {
       if (payment.state == 'approved') {
-        savePaid(req.query.paymentId);
+        setPaidToTrue(req.query.paymentId);
         res.redirect('/approved');
         console.log('payment completed successfully');
       } else {
