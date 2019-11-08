@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Items = require('../../models/items');
-const Order = require('../../models/orders');
+// const Items = require('../../models/items');
+// const Order = require('../../models/orders');
 require('dotenv/config');
 // const {
 //   createPayment

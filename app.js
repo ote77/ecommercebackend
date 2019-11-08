@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require ('cors');
 //Send body using Json
+
 app.use(express.urlencoded({
   extended: true
 }));
@@ -10,16 +12,20 @@ app.use(express.json());
 
 require('dotenv/config');
 
+app.use(cors());
 //Import route
 // const itemsRoute = require('./routes/items');
 //middleware
 app.use(async (req, res, next) => {
+  console.log('[%s] %s', req.method, req.url);
   // console.log(res);
   const start = Date.now();
   // await console.log(res.locals);
+  // console.log('<------ before next ------>');
   await next();
+  // console.log('<------ after next ------>');
   const ms = Date.now() - start;
-  console.log('[%s] %s - (%sms)', req.method, req.url, ms);
+  console.log('(Finished %sms)', ms);
   // console.log(res.locals);
 });
 
@@ -29,6 +35,8 @@ app.use('/order', require('./routes/order'));
 app.use('/orders', require('./routes/orders'));
 app.use('/tests', require('./routes/tests'));
 app.use('/checkout', require('./routes/paypal/checkout'));
+app.use('/cart', require('./routes/cart/cart'));
+app.use('/user', require('./routes/users/user'));
 
 // app.use('/posts',() => {
 //   console.log('This is a middleware');
@@ -54,4 +62,4 @@ mongoose.connect(process.env.DB_CONNECTION, {
   () => console.log('Database connected\n Enjoy debugging\n       :)')
 );
 
-app.listen(3000);
+app.listen(4000);

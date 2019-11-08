@@ -2,28 +2,58 @@ const mongoose = require('mongoose');
 
 //Define how your data looks like
 
-const itemsSchema = mongoose.Schema({
-  _id: {
-    required: true,
-    type: Number,
-    default: 0
-  },
-  name: {
+const usersSchema = mongoose.Schema({
+  username: {
     type: String,
     unique: true,
-    required: true
+    required: 'Please provide the username'
   },
-  price: {
-    required: true,
-    type: Number,
-    default: 0
+  displayname: {
+    type: String,
+    required: 'Please set a display name'
   },
-  stock: {
-    required: true,
-    type: Number,
-    default: 0
-  }
+  user_type: {
+    type: String,
+    enum: ['client', 'admin', 'staff'],
+    default: "client"
+  },
+  password: {
+    type: String,
+    required: 'Please provide the password'
+  },
+  confirm_password: {
+    type: String,
+    required: "Please provide the confirm password."
+  },
+  email: {
+    type: String,
+    trim: true,
+    lowercase: true,
+    unique: true,
+    required: 'Email address is required'
+  },
+  address: [{
+      line1: String,
+      city: String,
+      country_code: String,
+      postal_code: String,
+      state: String,
+      default: Boolean
+
+  }],
+  cart: Array,
+  wishlist: Array,
+  orders: [{type: Number}]
 
 });
+function passwordConfirm(value) {
+  // `this` is the mongoose document
+  return this.password == value;
+}
 
-module.exports = mongoose.model('Items', itemsSchema);
+var validateEmail = function(email) {
+  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return re.test(email);
+};
+
+module.exports = mongoose.model('Users', usersSchema);
