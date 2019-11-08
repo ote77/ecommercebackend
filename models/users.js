@@ -43,7 +43,7 @@ const usersSchema = mongoose.Schema({
   }],
   cart: Array,
   wishlist: Array,
-  orders: [{type: Number}]
+  orders: [{type: String}]
 
 });
 function passwordConfirm(value) {

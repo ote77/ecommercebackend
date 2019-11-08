@@ -26,6 +26,20 @@ const newAddress = async (username,address) => {
   }
 };
 
+const saveOrderToUser = async (username,orderId) => {
+  try {
+    console.log('<------ username ------>\n', username);
+    console.log('<------ orderId ------>\n', orderId);
+    const userWithOrderId = await User.findOneAndUpdate({username:username}, {
+      $push: {
+        orders: orderId
+      }
+    });
+    console.log('<------ userWithOrderId ------>\n', userWithOrderId);
+  } catch (e) {
+    console.log('<------ e in saveOrderToUser ------>\n', e);
+  }
+};
 module.exports = {
-  getUserByUsername, newAddress
+  getUserByUsername, newAddress, saveOrderToUser
 };

@@ -47,8 +47,8 @@ app.use('/user', require('./routes/users/user'));
 
 
 
-app.get('/', (req, res) => {
-  res.send('weare');
+app.get('/approved', (req, res) => {
+  res.send('yey');
 });
 
 

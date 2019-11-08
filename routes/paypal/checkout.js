@@ -7,7 +7,9 @@ require('dotenv/config');
 const {
   savePayid,createPayment,getTransctions,setPaidToTrue,createPayment2
 } = require('../../jss/paymentMethods');
-
+const {
+  saveOrderToUser
+} = require('../../somemethodstemp/userMethods');
 //Paypal config
 const paypal = require('paypal-rest-sdk');
 paypal.configure({
@@ -35,6 +37,7 @@ router.post('/payment', async(req, res) => {
   try {
     order = await createPayment2(req.body.items,req.body.user);
     console.log('<------ return order ------>\n', order);
+    saveOrderToUser(req.body.user.username,order.orderId);
   } catch (e) {
     res.json({message:e});
   }

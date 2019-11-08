@@ -83,6 +83,18 @@ router.post('/register', async (req, res) => {
   }
 });
 
+router.get('/info', async (req, res) => {
+  try {
+    // console.log('<------ req.body ------>\n', req.body);
+    const user = await getUserByUsername(req.user.username);
+    res.json(user);
+  } catch (err) {
+    console.log('<------ err ------>\n', err);
+    res.json({
+      message: err
+    });
+  }
+});
 //wishlist   ----->
 //add wishlist to user db
 router.post('/wishlist', async (req, res) => {

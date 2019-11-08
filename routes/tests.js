@@ -11,6 +11,9 @@ const {
 const {
   getTransctions
 } = require('../jss/paymentMethods');
+const {
+  getUserByUsername, newAddress
+} = require('../somemethodstemp/userMethods');
 //get back post lists.
 
 
@@ -117,4 +120,17 @@ router.post('/additem', async (req, res) => {
   }
 });
 
+router.get('/info/:id', async (req, res) => {
+  console.log('<------ ha ------>');
+  try {
+    // console.log('<------ req.body ------>\n', req.body);
+    const user = await getUserByUsername(req.params.id);
+    res.json(user);
+  } catch (err) {
+    console.log('<------ err ------>\n', err);
+    res.json({
+      message: err
+    });
+  }
+});
 module.exports = router;

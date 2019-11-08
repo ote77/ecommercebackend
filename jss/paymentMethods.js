@@ -1,7 +1,11 @@
 const Order = require('../models/orders');
+// const User = require('../models/user');
 const {
   createOrder
 } = require('./createOrder');
+const {
+  saveOrderToUser
+} = require('../somemethodstemp/userMethods');
 
 //create Payment file for Paypal
 const createPayment = async (orderId, user) => {
@@ -11,7 +15,7 @@ let orderDetail = {};
   try {
     orderDetail = await Order.findById(orderId);
   } catch (err) {
-    console.log('<------ err try ------>\n', err);
+    console.log('<------ orderdetail ------>\n', err);
   }
 
   const userDetail = user;
@@ -57,18 +61,14 @@ let orderDetail = {};
     orderDetail = await createOrder(items,user.username);
     // console.log('<------ orderDetail1 ------>\n', orderDetail);
   } catch (err) {
-    throw err
+    throw err;
   }
-
-  // console.log('<------ orderDetail2 ------>\n', orderDetail);
-  // const orderDetail = orderId;
-  // const userDetail = user;
   let paymentItems = [];
   payment.transactions[0].amount.details.subtotal = 0;
   for (var i in orderDetail.items) {
     paymentItems[i] = {
       "name": orderDetail.items[i].name,
-      "description": "description here",
+      "description": "change to items.description after database",
       "quantity": orderDetail.items[i].quantity,
       "price": orderDetail.items[i].price,
       "sku": orderDetail.items[i]._id,
@@ -98,9 +98,6 @@ let orderDetail = {};
 };
 
 const savePayid = async (id,payId,link) => {
-  console.log('<------ savePayid and Link ------>');
-  console.log('<------ payid ------>\n', payId);
-  console.log('<------ id ------>\n', id);
   try {
     const updatedOrder = await Order.findByIdAndUpdate(id, {
       $set: {
@@ -108,6 +105,7 @@ const savePayid = async (id,payId,link) => {
         paylink: link
       }
     });
+    console.log('<------ savePayid and Link ------>');
     return updatedOrder;
   } catch (err) {
     console.log('<------ err in savePayid ------>\n', err);
