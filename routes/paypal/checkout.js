@@ -36,7 +36,7 @@ router.post('/payment', async(req, res) => {
   var order;
   try {
     order = await createPayment2(req.body.items,req.body.user);
-    console.log('<------ return order ------>\n', order);
+    // console.log('<------ return order ------>\n', order);
     saveOrderToUser(req.body.user.username,order.orderId);
   } catch (e) {
     res.json({message:e});
@@ -115,7 +115,7 @@ router.get('/process', async(req, res) => {
     "payer_id": req.query.PayerID,
     "transactions": [transactions]
   };
-  console.log(JSON.stringify(execute_payment_json));
+  // console.log(JSON.stringify(execute_payment_json));
   paypal.payment.execute(req.query.paymentId, execute_payment_json, function(error, payment) {
     if (error) {
       console.log('<------ err/process ------>\n', error);

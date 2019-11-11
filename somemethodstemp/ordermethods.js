@@ -2,25 +2,30 @@ const Order = require('../models/orders');
 
 
 
-const getOrderById = (id) => {
+const getOrderById = async (id) => {
   console.log('<------ getOrderById ------>\n', id);
-  Order.findById(id, (err, order) => {
-    if (err) console.log('<------ err ------>');
-    console.log('<------ order ------>\n', order);
+  const order = await Order.findById(id);
     return order;
-  });
 };
 
-const getOrdersByuserName = (username) => {
+const getBriefOrder = async (orderId) => {
+  console.log('<------ getBriefOrder ------>\n', orderId);
+  var opt={
+    date:1,
+    items:1,
+    paid:1
+  };
+  const briefOrder = await Order.findById(orderId, opt);
+    return briefOrder;
+};
+
+const getDetailOrder = async (orderId) => {
+  console.log('<------ getBriefOrder ------>\n', orderId);
 
 };
 
-const storeOrderIdinUser = (id,username) => {
 
-};
-
-const get = value;
 
 module.exports = {
-  getOrderById
+  getOrderById,getBriefOrder
 };

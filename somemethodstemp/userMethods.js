@@ -1,5 +1,8 @@
 const User = require('../models/users');
 
+const {
+  getBriefOrder
+} = require('./orderMethods');
 
 const getUserByUsername = async (username) => {
     const user = await User.findOne({"username":username});
@@ -28,18 +31,31 @@ const newAddress = async (username,address) => {
 
 const saveOrderToUser = async (username,orderId) => {
   try {
-    console.log('<------ username ------>\n', username);
-    console.log('<------ orderId ------>\n', orderId);
     const userWithOrderId = await User.findOneAndUpdate({username:username}, {
       $push: {
-        orders: orderId
+        orders: {
+          $each:[orderId],
+          $position: 0
+        }
       }
     });
-    console.log('<------ userWithOrderId ------>\n', userWithOrderId);
+    // console.log('<------ userWithOrderId ------>\n', userWithOrderId);
   } catch (e) {
     console.log('<------ e in saveOrderToUser ------>\n', e);
   }
 };
+
+const getOrderListByuserName = async (username) => {
+  console.log('<------ getOrdersByuserName ------>\n', username);
+  const user = await getUserByUsername(username);
+  let orderList=[];
+  for (var i in user.orders) {
+    let briefOrder = await getBriefOrder (user.orders[i]);
+    orderList.push(briefOrder);
+  }
+  return orderList;
+};
+
 module.exports = {
-  getUserByUsername, newAddress, saveOrderToUser
+  getUserByUsername, newAddress, saveOrderToUser, getOrderListByuserName
 };

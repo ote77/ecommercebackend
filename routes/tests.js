@@ -125,6 +125,7 @@ router.get('/info/:id', async (req, res) => {
   try {
     // console.log('<------ req.body ------>\n', req.body);
     const user = await getUserByUsername(req.params.id);
+    console.log('<------ user. ------>');
     res.json(user);
   } catch (err) {
     console.log('<------ err ------>\n', err);

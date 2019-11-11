@@ -21,9 +21,7 @@ app.use(async (req, res, next) => {
   // console.log(res);
   const start = Date.now();
   // await console.log(res.locals);
-  // console.log('<------ before next ------>');
   await next();
-  // console.log('<------ after next ------>');
   const ms = Date.now() - start;
   console.log('(Finished %sms)', ms);
   // console.log(res.locals);
@@ -47,9 +45,6 @@ app.use('/user', require('./routes/users/user'));
 
 
 
-app.get('/approved', (req, res) => {
-  res.send('yey');
-});
 
 
 

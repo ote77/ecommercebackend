@@ -5,11 +5,14 @@ const jwt = require('jsonwebtoken');
 const auth = require('../../middleware/auth');
 require('dotenv/config');
 const {
-  getUserByUsername, newAddress
+  getUserByUsername, newAddress, getOrderListByuserName
 } = require('../../somemethodstemp/userMethods');
 const {
   itemList
 } = require('../../somemethodstemp/itemMethods');
+const {
+  getOrderById
+} = require('../../somemethodstemp/orderMethods');
 
 
 
@@ -25,6 +28,7 @@ router.use(async (req, res, next) => {
 
 
 //User manage  ------>
+//login:
 router.get('/login', async (req, res) => {
   try {
     const user_data = await User.findOne({
@@ -63,24 +67,38 @@ router.get('/login', async (req, res) => {
 
 //Register
 router.post('/register', async (req, res) => {
-  //need to check if username exists.
-  const user = new User({
-    ...req.body
-  });
-  try {
-    // user.address[0].default=true;
-    user.displayname=user.username;
-    const newUser = await user.save();
-    console.log(newUser);
-    res.json(newUser);
-    console.log('<------ new user added ------>\n',newUser.username);
-    // console.log('ITEM-[%s] %s added', newUser._id, newUser.username);
-  } catch (err) {
-    console.log('<------ err ------>\n', err);
-    res.json({
-      message: err
+  //check user exist
+  const existUser = await getUserByUsername(req.body.username);
+  if (existUser) {
+    console.log('<------ existUser ------>');
+    res.status(400).json({
+      success: false,
+      message: 'Username already existed'
     });
+  } else {
+    const user = new User({
+      ...req.body
+    });
+    try {
+      user.displayname=user.username;
+      const newUser = await user.save();
+      console.log(newUser);
+      res.status(201).json({
+        status: 201,
+        message: "New user created successfully"
+      });
+      console.log('<------ new user added ------>\n',newUser.username);
+      // console.log('ITEM-[%s] %s added', newUser._id, newUser.username);
+    } catch (err) {
+      console.log('<------ err ------>\n', err);
+      res.status(500).json({
+        success: false,
+        message: err
+      });
+    }
+
   }
+
 });
 
 router.get('/info', async (req, res) => {
@@ -155,14 +173,48 @@ router.post('/address', async (req, res) => {
   }
 });
 
+router.get('/orders', async (req, res) => {
+  try {
+    const orderList = await getOrderListByuserName(req.user.username);
+    res.status(200).json({
+      success: true,
+      orderList
+    });
+  } catch (err) {
+    res.json({
+      message: err
+    });
+  }
+});
+
+router.get('/orders/:id', async (req, res) => {
+  //find order and return if the order belong to the user
+  try {
+    const order = await getOrderById(req.params.id);
+    if (order.username==req.user.username) {
+      res.status(200).json({
+        success: true,
+        order
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: 'Unauthorized'
+      });
+    }
+  } catch (err) {
+    res.status(404).json({
+      success: false,
+      message: "Order could not be found"
+    });
+  }
+});
 
 router.get('/test1', async (req, res) => {
-  //need to check if username exists.
   console.log(req.body);
   try {
     console.log('<------ haha ------>\n');
     res.send('haha');
-    // console.log('ITEM-[%s] %s added', newUser._id, newUser.username);
   } catch (err) {
     res.json({
       message: err
@@ -176,7 +228,6 @@ router.get('/test1', async (req, res) => {
 router.get('/Check', (req, res) => {
   console.log('<------ use ------>');
   console.log('<------ req.body ------>\n', req.body);
-
 });
 
 // test auth check
