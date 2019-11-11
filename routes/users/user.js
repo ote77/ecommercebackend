@@ -173,6 +173,7 @@ router.post('/address', async (req, res) => {
   }
 });
 
+//get brief order list
 router.get('/orders', async (req, res) => {
   try {
     const orderList = await getOrderListByuserName(req.user.username);
@@ -187,8 +188,9 @@ router.get('/orders', async (req, res) => {
   }
 });
 
+
 router.get('/orders/:id', async (req, res) => {
-  //find order and return if the order belong to the user
+  //find order and return if the order belongs to this user
   try {
     const order = await getOrderById(req.params.id);
     if (order.username==req.user.username) {

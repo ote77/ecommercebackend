@@ -13,17 +13,23 @@ var orderSchema = mongoose.Schema({
     type: Boolean,
     default: false
   },
+  status: String,
+  transactionID: String,
   transactions: {
+    type: Object,
+    default: {}
+  },
+  address: {
+    type: Object,
+    default: {}
+  },
+  amount: {
     type: Object,
     default: {}
   },
   payid: {
     type: String,
     default: "Unpaid"
-  },
-  paylink:{
-    type: String,
-    default: "Wait to set payment"
   },
   payer: Object
 });

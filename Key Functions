@@ -1,0 +1,33 @@
+Ecommerce backend
+User:
+- [x] add item to cart BD
+- [x] get cart items
+- [x] wishlist post/get
+- [ ] manage address and Get/post
+    - [x] set the first to default
+    - [ ] Change Default
+- [ ] //Add order by cart
+Checkout
+- [x] One step payment using User info and items
+    - [ ] discount
+    - [ ] Check stock again before payment
+    - [ ] repay the order. (by link / payID/ order detail)
+    - [x] save orderID in userdb (after created)
+        - [x] new order save first
+    - [x] store PayPal transaction ID
+- [ ] check username existed or not when register
+    - [x] username
+    - [ ] email
+- [ ] Processing paid order
+    - [ ] Send email
+    - [ ] Check status
+- [x] get user info by token
+    - [x] order list with brief detail
+    - [x] check order belong to this user only
+- [ ] Admin Part
+    - [x] Admin auth login
+    - [x] manage user
+    - [ ] manage item
+    - [ ] manage orders
+        - [x] check
+        - [ ] change status

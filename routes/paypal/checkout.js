@@ -5,7 +5,7 @@ const router = express.Router();
 require('dotenv/config');
 
 const {
-  savePayid,createPayment,getTransctions,setPaidToTrue,createPayment2
+  savePayid,createPayment,getTransctions,recordSuccessPayment,createPayment2
 } = require('../../jss/paymentMethods');
 const {
   saveOrderToUser
@@ -46,11 +46,13 @@ router.post('/payment', async(req, res) => {
     if (error) {
       console.log('<------ paypal.payment.create ------>\n', error);
     } else {
+      console.log('<------ payid, orderID ------>');
       console.log(payment.id,order.orderId);
       for (let link of payment.links) {
         if (link.rel === 'approval_url') {
-          console.log(link.href);
-          savePayid(order.orderId, payment.id,link.href);
+          console.log('redirect link: ',link.href);
+          //save payid to the order detail
+          savePayid(order.orderId, payment.id);
           res.redirect(link.href);
           console.log("redirected");
         }
@@ -59,6 +61,7 @@ router.post('/payment', async(req, res) => {
   });
 });
 
+//repay the order.
 router.post('/payment/:orderId', async (req, res) => {
   console.log("backend pay");
   const user = {
@@ -90,7 +93,7 @@ router.post('/payment/:orderId', async (req, res) => {
       for (let link of payment.links) {
         if (link.rel === 'approval_url') {
           console.log(link.href);
-          savePayid(req.params.orderId,payment.id,link.href);
+          savePayid(req.params.orderId,payment.id);
           res.redirect(link.href);
           console.log("redirected");
         }
@@ -121,7 +124,7 @@ router.get('/process', async(req, res) => {
       console.log('<------ err/process ------>\n', error);
     } else {
       if (payment.state == 'approved') {
-        setPaidToTrue(req.query.paymentId);
+        recordSuccessPayment(req.query.paymentId,payment.transactions[0].related_resources[0].sale.id);
         res.redirect('/approved');
         console.log('payment completed successfully');
       } else {
