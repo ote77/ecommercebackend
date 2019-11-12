@@ -135,7 +135,7 @@ const recordSuccessPayment = async (payId,transactionId) => {
         transactionID: transactionId
       }
     });
-    console.log('<------ transactionId ------>\n', updatedOrder.transactionId);
+    console.log('<------ transactionId ------>\n', transactionId);
     return updatedOrder;
   } catch (err) {
     console.log('<------ err in savePayid ------>\n', err);

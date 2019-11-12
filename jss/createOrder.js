@@ -24,7 +24,7 @@ const createOrder = async (items, username, res) => {
     // console.log(stockItems.stock);
 
     if (items[i].price == stockItems.price && items[i].name == stockItems.name) {
-      if (items[i].quantity <= stockItems.stock) {
+      if (items[i].quantity <= stockItems.stock && stockItems.status=="Sale") {
         // console.log('<------ stock ------>\n', stockItems.stock);
         //Can be pushed here to the items with price and name.
         // console.log(items[i]._id + ' available');

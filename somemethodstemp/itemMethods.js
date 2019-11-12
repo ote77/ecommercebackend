@@ -14,7 +14,7 @@ const getItemList = async (filter,user_type) => {
   if (user_type=="admin") {
    items = await Items.find(filter,'-__v');
   } else {
-   items = await Items.find({status:'Sale'},'-__v -status');
+   items = await Items.find(filter,'-__v -status');
   }
   return items;
 };
@@ -52,7 +52,7 @@ const itemList = async (items, res) => {
     } catch (e) {
       console.log(e);
     }
-    if (stockItems) {
+    if (stockItems && stockItems.status=="Sale") {
       items[i].price = stockItems.price;
       items[i].name = stockItems.name;
       //quantity max: stock.

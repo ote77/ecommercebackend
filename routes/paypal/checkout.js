@@ -38,27 +38,33 @@ router.post('/payment', async(req, res) => {
     order = await createPayment2(req.body.items,req.body.user);
     // console.log('<------ return order ------>\n', order);
     saveOrderToUser(req.body.user.username,order.orderId);
-  } catch (e) {
-    res.json({message:e});
-  }
 
-  paypal.payment.create(order.payment, function(error, payment) {
-    if (error) {
-      console.log('<------ paypal.payment.create ------>\n', error);
-    } else {
-      console.log('<------ payid, orderID ------>');
-      console.log(payment.id,order.orderId);
-      for (let link of payment.links) {
-        if (link.rel === 'approval_url') {
-          console.log('redirect link: ',link.href);
-          //save payid to the order detail
-          savePayid(order.orderId, payment.id);
-          res.redirect(link.href);
-          console.log("redirected");
+    //PayPal process
+    paypal.payment.create(order.payment, function(error, payment) {
+      if (error) {
+        console.log('<------ paypal.payment.create ------>\n', error);
+      } else {
+        console.log('<------ payid, orderID ------>');
+        console.log(payment.id,order.orderId);
+        for (let link of payment.links) {
+          if (link.rel === 'approval_url') {
+            console.log('redirect link: ',link.href);
+            //save payid to the order detail
+            savePayid(order.orderId, payment.id);
+            res.redirect(link.href);
+            console.log("redirected");
+          }
         }
       }
-    }
-  });
+    });
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: e
+    });
+  }
+
+
 });
 
 //repay the order.

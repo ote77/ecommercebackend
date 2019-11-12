@@ -10,7 +10,7 @@ const {
 } = require('../../somemethodstemp/itemMethods');
 
 const {
-  getBriefOrderforAdmin,getOrderById
+  getBriefOrderforAdmin,getOrderById,changeOrderStatus
 } = require('../../somemethodstemp/orderMethods');
 const {
   getUserByUsername
@@ -89,7 +89,7 @@ router.post('/register', async (req, res) => {
 //get item list
 router.get('/items', async (req, res) => {
   try {
-    const items = await getItemList({},req.user.user_type);
+    const items = await getItemList(req.body.filter,req.user.user_type);
     res.status(200).json({
       success: true,
       items
@@ -156,8 +156,7 @@ router.patch('/items/:itemId', async (req, res) => {
   }
 });
 
-
-
+//Check User info
 router.get('/user/:id', async (req, res) => {
   console.log('<------ ha ------>');
   try {
@@ -176,7 +175,7 @@ router.get('/user/:id', async (req, res) => {
 //get all orders in brief
 router.get('/orders', async (req, res) => {
   try {
-    const order = await getBriefOrderforAdmin();
+    const order = await getBriefOrderforAdmin(req.body.filter);
     res.json(order);
     console.log(order);
   } catch (err) {
@@ -189,10 +188,9 @@ router.get('/orders', async (req, res) => {
   }
 });
 
-router.get('/orders/:id', async (req, res) => {
-  //find order and return if the order belongs to this user
+router.get('/orders/:orderId', async (req, res) => {
   try {
-    const order = await getOrderById(req.params.id);
+    const order = await getOrderById(req.params.orderId);
       res.status(200).json({
         success: true,
         order
@@ -206,18 +204,21 @@ router.get('/orders/:id', async (req, res) => {
   }
 });
 
-router.get('/test1', async (req, res) => {
-  console.log(req.body);
+router.patch('/orders/:orderId', async (req, res) => {
   try {
-    console.log('<------ haha ------>\n');
-    res.send('haha');
+    const updatedOrder = await changeOrderStatus(req.params.orderId,req.body.status);
+    res.status(200).json({
+      success: true,
+      message: 'Order updated'
+    });
   } catch (err) {
-    res.json({
+    console.log('<------ err ------>\n', err);
+    res.status(400).json({
+      success: false,
       message: err
     });
   }
 });
-
 
 
 

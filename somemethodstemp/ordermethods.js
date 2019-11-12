@@ -13,13 +13,14 @@ const getBriefOrder = async (orderId) => {
   var opt={
     date:1,
     items:1,
+    status:1,
     paid:1
   };
   const briefOrder = await Order.findById(orderId, opt);
     return briefOrder;
 };
 
-const getBriefOrderforAdmin = async () => {
+const getBriefOrderforAdmin = async (filter) => {
   console.log('<------ getBriefOrderforAdmin ------>');
   var opt={
     date:1,
@@ -28,10 +29,19 @@ const getBriefOrderforAdmin = async () => {
     status:1,
     paid:1
   };
-  const orderList = await Order.find({}, opt).sort('-date');
+  const orderList = await Order.find(filter, opt).sort('-date');
     return orderList;
 };
-
+//change order status if paid:true
+const changeOrderStatus = async (id,status) => {
+  console.log('<------ change Order %s Status to %s:  ------>',id,status);
+  const updatedOrder = await Order.findByIdAndUpdate(id, {
+    $set: {
+      status:status
+    }
+  });
+  return updatedOrder;
+};
 const getDetailOrder = async (orderId) => {
   console.log('<------ getBriefOrder ------>\n', orderId);
 
@@ -40,5 +50,5 @@ const getDetailOrder = async (orderId) => {
 
 
 module.exports = {
-  getOrderById,getBriefOrder,getBriefOrderforAdmin
+  getOrderById,getBriefOrder,getBriefOrderforAdmin,changeOrderStatus
 };
