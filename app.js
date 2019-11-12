@@ -51,7 +51,7 @@ app.use('/admin', require('./routes/admin/admin'));
 
 
 //connect to db
-mongoose.connect(process.env.DB_CONNECTION, {
+mongoose.connect(process.env.DB_LOCAL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   },

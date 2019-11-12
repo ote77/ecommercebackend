@@ -17,19 +17,16 @@ const {
 //get back post lists.
 
 
-router.get('/:payId', async (req, res) => {
- const transactions = await getTransctions(req.params.payId);
- res.json(transactions);
-});
 
-
-router.get('/addidNum', async (req, res) => {
+router.get('/createidcount', async (req, res) => {
+  console.log('<------ 1 ------>');
   try {
-    console.log('addidNum');
-    const id = await nextId();
-    // console.log(id);
+    const number = new ItemsNum({
+      name: "productid",
+      idSum:1
+    });
+    const id = await number.save();
     res.json(id);
-    // console.log(id);
   } catch (err) {
     console.log(err);
     res.json({
@@ -64,7 +61,7 @@ router.post('/newid/:idNum', async (req, res) => {
     //passing object here
     idSum: req.params.idNum,
     //change to productid here
-    name: 'xxx'
+    name: 'productid'
   });
   try {
     const savedId = await newId.save();

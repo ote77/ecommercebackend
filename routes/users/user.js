@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const User = require('../../models/users');
 const jwt = require('jsonwebtoken');
-const auth = require('../../middleware/auth');
+const bcrypt = require('bcrypt');
 require('dotenv/config');
+const auth = require('../../middleware/auth');
 const {
   getUserByUsername, newAddress, getOrderListByuserName
 } = require('../../somemethodstemp/userMethods');
@@ -30,17 +31,25 @@ router.use(async (req, res, next) => {
 //User manage  ------>
 //login:
 router.get('/login', async (req, res) => {
+  console.log('<------ 1 ------>');
   try {
     const user_data = await User.findOne({
-      "username": req.body.username,
-      "password": req.body.password
+      "username": req.body.username
     });
     if (!user_data) {
       res.status(401).json({
         status: 401,
-        message: "Invalid username and password.",
+        message: "Invalid username.",
       });
-    } else {
+    }
+console.log('<------ 2 ------>');
+    const validPassword = await bcrypt.compare(
+    req.body.password,
+    user_data.password
+    );
+    console.log('<------ 3 ------>');
+    console.log('<------ validPassword ------>\n', validPassword);
+    if (validPassword) {
       console.log('user_data here');
       console.log(user_data);
       const payload = {
@@ -55,8 +64,14 @@ router.get('/login', async (req, res) => {
         message: "You have succesfully loggedin.",
         token: token
       });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: 'Invalid password'
+      });
     }
   } catch (err) {
+    console.log('<------ err ------>\n', err);
     res.status(401).json({
       status: 401,
       message: err
@@ -79,6 +94,9 @@ router.post('/register', async (req, res) => {
     const user = new User({
       ...req.body
     });
+    const { password } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
     try {
       user.displayname=user.username;
       const newUser = await user.save();
