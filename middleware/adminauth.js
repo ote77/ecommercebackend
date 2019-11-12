@@ -18,7 +18,7 @@ const adminauth = (req, res, next) => {
         });
       } else {
         req.user = decoded;
-        console.log('<------ admin: %s ------>', req.user.username);
+        console.log('<------ %s: %s ------>',req.user.user_type, req.user.username);
         next();
       }
     });

@@ -13,7 +13,11 @@ var orderSchema = mongoose.Schema({
     type: Boolean,
     default: false
   },
-  status: String,
+  status: {
+    type: String,
+    enum: ['Created', 'Received', 'Packing','In transit'],
+    default: "Created"
+  },
   transactionID: String,
   transactions: {
     type: Object,

@@ -13,7 +13,10 @@ router.post('/', auth, async (req, res) => {
     const cart = req.body;
     user.cart = cart;
     user.save();
-    res.json(cart);
+    res.status(200).json({
+      success: true,
+      message: 'Successfully add to cart'
+    });
   } catch (err) {
     console.log('<------ err ------>\n', err);
     res.json({

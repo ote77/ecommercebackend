@@ -2,12 +2,24 @@ const express = require('express');
 const router = express.Router();
 const Items = require('../models/items');
 
+const adminauth = require('../middleware/adminauth');
+
 //get back an item by id.
 router.get('/:itemId', async (req, res) => {
   try {
-    const items = await Items.findById(req.params.itemId);
-    res.json(items);
-    // console.log(items);
+    const items = await Items.findOne({_id:req.params.itemId,status:"sale"});
+    console.log(items);
+    if (items) {
+      res.status(200).json({
+        success: true,
+        items
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'Item could not be found'
+      });
+    }
   } catch (err) {
     res
       .status(404)
@@ -18,8 +30,8 @@ router.get('/:itemId', async (req, res) => {
   }
 });
 
-//modify a item
-router.patch('/:itemId', async (req, res) => {
+//modify a item, admin auth
+router.patch('/:itemId', adminauth, async (req, res) => {
   console.log('patch');
   try {
     const modifiedItem = await Items.findByIdAndUpdate(req.params.itemId, {
@@ -35,7 +47,7 @@ router.patch('/:itemId', async (req, res) => {
   }
 });
 
-router.delete('/:itemId', async (req, res) => {
+router.delete('/:itemId', adminauth, async (req, res) => {
   try {
     const removedItem = await Items.remove({
       _id: req.params.itemId

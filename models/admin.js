@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 //Define how your data looks like
 
-const usersSchema = mongoose.Schema({
+const adminSchema = mongoose.Schema({
   username: {
     type: String,
     unique: true,
@@ -12,11 +12,10 @@ const usersSchema = mongoose.Schema({
     type: String,
     required: 'Please set a display name'
   },
-  birthday:Date,
   user_type: {
     type: String,
-    enum: ['client', 'admin', 'staff'],
-    default: "client"
+    enum: ['admin', 'staff'],
+    default: "staff"
   },
   password: {
     type: String,
@@ -32,20 +31,7 @@ const usersSchema = mongoose.Schema({
     lowercase: true,
     unique: true,
     required: 'Email address is required'
-  },
-  address: [{
-      line1: String,
-      city: String,
-      country_code: String,
-      postal_code: String,
-      state: String,
-      default: Boolean
-
-  }],
-  cart: Array,
-  wishlist: Array,
-  orders: [{type: String}]
-
+  }
 });
 function passwordConfirm(value) {
   // `this` is the mongoose document
@@ -57,4 +43,4 @@ var validateEmail = function(email) {
   return re.test(email);
 };
 
-module.exports = mongoose.model('Users', usersSchema);
+module.exports = mongoose.model('Admin', adminSchema);

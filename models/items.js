@@ -13,10 +13,19 @@ const itemsSchema = mongoose.Schema({
     unique: true,
     required: true
   },
+  description: {
+    type: String,
+    default: "Description for this product."
+  },
   price: {
     required: true,
     type: Number,
     default: 0
+  },
+  status: {
+    type: String,
+    enum: ['Created', 'Sale', 'Suspended'],
+    default: "Sale"
   },
   stock: {
     required: true,

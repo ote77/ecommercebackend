@@ -4,12 +4,16 @@ const Items = require('../models/items');
 const {
   nextId
 } = require('../jss/addid');
+const adminauth = require('../middleware/adminauth');
 
 //get back item lists.
 router.get('/', async (req, res) => {
   try {
-    const items = await Items.find({}, 'name price stock');
-    res.json(items);
+    const items = await Items.find({}, 'name price stock description');
+    res.status(200).json({
+      success: true,
+      items
+    });
   } catch (err) {
     res.json({
       message: err
@@ -18,7 +22,7 @@ router.get('/', async (req, res) => {
 });
 
 //submit a item.
-router.post('/', async (req, res) => {
+router.post('/', adminauth, async (req, res) => {
   const id = await nextId();
   const items = new Items({
     _id: id,
@@ -26,10 +30,14 @@ router.post('/', async (req, res) => {
   });
   try {
     const newItem = await items.save();
-    res.json(newItem);
+    res.status(201).json({
+      success: true,
+      message: 'New items added'
+    });
     console.log('ITEM-[%s] %s added', items._id, items.name);
   } catch (err) {
-    res.json({
+    res.status(400).json({
+      success: false,
       message: err
     });
   }

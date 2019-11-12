@@ -98,6 +98,7 @@ let orderDetail = {};
   return result;
 };
 
+
 const savePayid = async (id,payId) => {
   try {
     const updatedOrder = await Order.findByIdAndUpdate(id, {
@@ -112,8 +113,7 @@ const savePayid = async (id,payId) => {
   }
 };
 
-
-
+//get transctions file for the execute process
 const getTransctions = async (payId) => {
   try {
     const payment = await Order.findOne({payid:payId});
@@ -125,6 +125,7 @@ const getTransctions = async (payId) => {
   }
 };
 
+//Record the order after success payment by paid and transction ID
 const recordSuccessPayment = async (payId,transactionId) => {
   console.log('<------ recordSuccessPayment status ------>:');
   try {
