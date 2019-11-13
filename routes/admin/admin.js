@@ -141,7 +141,7 @@ router.get('/items/:itemId', async (req, res) => {
     console.log('<------ err in get items ------>\n', err);
     res.status(404).json({
       success: false,
-      message: 'Cannot get item list'
+      message: 'Unable to find'
 });
   }
 });

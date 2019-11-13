@@ -16,7 +16,11 @@ const getItemList = async (filter,user_type) => {
   } else {
    items = await Items.find(filter,'-__v -status');
   }
-  return items;
+  if (items.length==0) {
+    throw 'Unable to find';
+  } else {
+    return items;
+  }
 };
 
 // New item:

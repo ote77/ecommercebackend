@@ -53,12 +53,12 @@ let orderDetail = {};
 
 //createpayment2 combines create oreder.
 //user: username,shipping_address
-const createPayment2 = async (items, user) => {
+const createPayment2 = async (items, user, username) => {
 let payment = require('../routes/paypal/paymentTemp.json');
 
 let orderDetail = {};
   try {
-    orderDetail = await createOrder(items,user.username);
+    orderDetail = await createOrder(items,username);
     // console.log('<------ orderDetail1 ------>\n', orderDetail);
   } catch (err) {
     throw err;
