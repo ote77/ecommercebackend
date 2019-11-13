@@ -15,7 +15,7 @@ const adminSchema = mongoose.Schema({
   user_type: {
     type: String,
     enum: ['admin', 'staff'],
-    default: "staff"
+    default: "admin"
   },
   password: {
     type: String,

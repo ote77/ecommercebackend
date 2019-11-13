@@ -4,12 +4,11 @@ const Items = require('../models/items');
 const {
   nextId
 } = require('../jss/addid');
-const adminauth = require('../middleware/adminauth');
 
 //get back item lists.
 router.get('/', async (req, res) => {
   try {
-    const items = await Items.find({}, 'name price stock description');
+    const items = await Items.find({status:'Sale'}, '-__v -status');
     res.status(200).json({
       success: true,
       items
@@ -21,27 +20,28 @@ router.get('/', async (req, res) => {
   }
 });
 
-//submit a item.
-router.post('/', adminauth, async (req, res) => {
-  const id = await nextId();
-  const items = new Items({
-    _id: id,
-    ...req.body
-  });
+router.get('/:itemId', async (req, res) => {
   try {
-    const newItem = await items.save();
-    res.status(201).json({
-      success: true,
-      message: 'New items added'
-    });
-    console.log('ITEM-[%s] %s added', items._id, items.name);
+    const items = await Items.findOne({_id:req.params.itemId,status:"Sale"},'-__v -status');
+    if (items) {
+      res.status(200).json({
+        success: true,
+        items
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'Item could not be found'
+      });
+    }
   } catch (err) {
-    res.status(400).json({
-      success: false,
-      message: err
-    });
+    res
+      .status(404)
+      .json({
+        success: false,
+        message: 'Item could not be found'
+      });
   }
 });
-
 
 module.exports = router;

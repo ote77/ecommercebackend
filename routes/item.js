@@ -30,6 +30,29 @@ router.get('/:itemId', async (req, res) => {
   }
 });
 
+//submit a item.
+router.post('/', adminauth, async (req, res) => {
+  const id = await nextId();
+  const items = new Items({
+    _id: id,
+    ...req.body
+  });
+  try {
+    const newItem = await items.save();
+    res.status(201).json({
+      success: true,
+      message: 'New items added'
+    });
+    console.log('ITEM-[%s] %s added', items._id, items.name);
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err
+    });
+  }
+});
+
+
 //modify a item, admin auth
 router.patch('/:itemId', adminauth, async (req, res) => {
   console.log('patch');

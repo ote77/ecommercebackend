@@ -56,6 +56,20 @@ const getOrderListByuserName = async (username) => {
   return orderList;
 };
 
+const checkUsernameEmail = async (username,email) => {
+  let exist;
+  const existUsername = await User.findOne({username:username});
+  const existEmail = await User.findOne({email:email});
+  if (existUsername!=null) {
+    exist = "username";
+  } else if (existEmail!=null) {
+    exist = "Email";
+  }
+  console.log('<------ exist ------>\n', exist);
+  return exist;
+
+};
+
 module.exports = {
-  getUserByUsername, newAddress, saveOrderToUser, getOrderListByuserName
+  getUserByUsername, newAddress, saveOrderToUser, getOrderListByuserName, checkUsernameEmail
 };

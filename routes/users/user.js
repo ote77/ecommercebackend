@@ -1,12 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../../models/users');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-require('dotenv/config');
 const auth = require('../../middleware/auth');
 const {
-  getUserByUsername, newAddress, getOrderListByuserName
+  getUserByUsername, newAddress, getOrderListByuserName, checkUsernameEmail
 } = require('../../somemethodstemp/userMethods');
 const {
   itemList
@@ -14,6 +11,9 @@ const {
 const {
   getOrderById
 } = require('../../somemethodstemp/orderMethods');
+const {
+  generateToken,bcryptPassword, comparePassword
+} = require('../../somemethodstemp/securityMethods');
 
 
 
@@ -31,7 +31,6 @@ router.use(async (req, res, next) => {
 //User manage  ------>
 //login:
 router.get('/login', async (req, res) => {
-  console.log('<------ 1 ------>');
   try {
     const user_data = await User.findOne({
       "username": req.body.username
@@ -42,23 +41,13 @@ router.get('/login', async (req, res) => {
         message: "Invalid username.",
       });
     }
-console.log('<------ 2 ------>');
-    const validPassword = await bcrypt.compare(
-    req.body.password,
-    user_data.password
-    );
-    console.log('<------ 3 ------>');
-    console.log('<------ validPassword ------>\n', validPassword);
+    const validPassword = await comparePassword(req.body.password,user_data.password);
     if (validPassword) {
-      console.log('user_data here');
-      console.log(user_data);
       const payload = {
         username: user_data.username
       };
       console.log('<------ payload ------>', payload);
-      const token = jwt.sign(payload, process.env.JWT_SCRECT, {
-        expiresIn: 60 * 60 * 6 // expires in 6 hours
-      });
+      const token = generateToken(payload);
       console.log('<------ token ------>\n', token);
       res.status(200).json({
         message: "You have succesfully loggedin.",
@@ -83,26 +72,33 @@ console.log('<------ 2 ------>');
 //Register
 router.post('/register', async (req, res) => {
   //check user exist
-  const existUser = await getUserByUsername(req.body.username);
-  if (existUser) {
+  const exist = await checkUsernameEmail(req.body.username,req.body.email);
+  if (exist) {
     console.log('<------ existUser ------>');
     res.status(400).json({
       success: false,
-      message: 'Username already existed'
+      message: 'Username/ email already existed',
+      exist:exist
     });
   } else {
     const user = new User({
       ...req.body
     });
     const { password } = req.body;
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
+    const bPassword = await bcryptPassword(password);
+    user.password = bPassword;
+    user.confirm_password = 'You can\'t see';
+    user.displayname=user.username;
     try {
-      user.displayname=user.username;
       const newUser = await user.save();
-      console.log(newUser);
+      const payload = {
+        username: user.username
+      };
+      console.log('<------ payload ------>', payload);
+      const token = generateToken(payload);
       res.status(201).json({
         status: 201,
+        token: token,
         message: "New user created successfully"
       });
       console.log('<------ new user added ------>\n',newUser.username);

@@ -1,20 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const Admin = require('../../models/admin');
-const jwt = require('jsonwebtoken');
 const adminauth = require('../../middleware/adminauth');
-require('dotenv/config');
 
 const {
   getItemList,addNewItem,patchItem
 } = require('../../somemethodstemp/itemMethods');
-
 const {
   getBriefOrderforAdmin,getOrderById,changeOrderStatus
 } = require('../../somemethodstemp/orderMethods');
 const {
   getUserByUsername
 } = require('../../somemethodstemp/userMethods');
+const {
+  generateToken, bcryptPassword, comparePassword
+} = require('../../somemethodstemp/securityMethods');
 
 router.use(async (req, res, next) => {
   if (req.url != '/login' && req.url != '/register') {
@@ -29,29 +29,33 @@ router.get('/login', async (req, res) => {
   try {
     const user_data = await Admin.findOne({
       "username": req.body.username,
-      "password": req.body.password,
       "user_type":"admin"
     });
     if (!user_data) {
       res.status(401).json({
         status: 401,
-        message: "Invalid username and password.",
+        message: "Invalid username.",
       });
     } else {
+    const validPassword = await comparePassword(req.body.password,user_data.password);
+    if (validPassword) {
       const payload = {
         username: user_data.username,
         user_type: "admin"
       };
       console.log('<------ payload ------>', payload);
-      const token = jwt.sign(payload, process.env.JWT_SCRECT, {
-        expiresIn: 60 * 60 * 12 // expires in 12 hours
-      });
+      const token = generateToken(payload);
       console.log('<------ token ------>\n', token);
       res.status(200).json({
         message: "You have succesfully loggedin.",
         token: token
       });
-    }
+    } else {
+      res.status(403).json({
+        success: false,
+        message: 'Invalid password'
+      });
+    }}
   } catch (err) {
     res.status(401).json({
       status: 401,
@@ -66,10 +70,13 @@ router.post('/register', async (req, res) => {
     const user = new Admin({
       ...req.body
     });
+    const { password } = req.body;
+    const bPassword = await bcryptPassword(password);
+    user.password = bPassword;
+    user.confirm_password = 'You can\'t see';
+    user.displayname=user.username;
     try {
-      user.displayname=user.username;
       const newUser = await user.save();
-      console.log(newUser);
       res.status(201).json({
         status: 201,
         message: "New admin created successfully"

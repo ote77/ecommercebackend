@@ -14,7 +14,7 @@ const auth = (req, res, next) => {
         });
       } else {
         req.user = decoded;
-        console.log('<------ req.user: %s ------>', req.user.username);
+        console.log('<------ This is: %s ------>', req.user.username);
         next();
       }
     });
