@@ -3,24 +3,29 @@ const router = express.Router();
 const User = require('../../models/users');
 const auth = require('../../middleware/auth');
 const {
-  getUserByUsername, newAddress, getOrderListByuserName, checkUsernameEmail
-} = require('../../somemethodstemp/userMethods');
+  getUserByUsername,
+  newAddress,
+  getOrderListByuserName,
+  checkUsernameEmail
+} = require('../../utils/userMethods');
 const {
   itemList
-} = require('../../somemethodstemp/itemMethods');
+} = require('../../utils/itemMethods');
 const {
   getOrderById
-} = require('../../somemethodstemp/orderMethods');
+} = require('../../utils/orderMethods');
 const {
-  generateToken,bcryptPassword, comparePassword
-} = require('../../somemethodstemp/securityMethods');
+  generateToken,
+  bcryptPassword,
+  comparePassword
+} = require('../../utils/securityMethods');
 
 
 
 //Use auth in user url excpet login and register
 router.use(async (req, res, next) => {
   if (req.url != '/login' && req.url != '/register') {
-    console.log('<------ auth in ------>', req.url );
+    console.log('<------ auth in ------>', req.url);
     auth(req, res, next);
   } else {
     next();
@@ -30,36 +35,46 @@ router.use(async (req, res, next) => {
 
 //User manage  ------>
 //login:
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const user_data = await User.findOne({
       "username": req.body.username
     });
     if (!user_data) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Invalid username or password.",
       });
-    } else {
-      const validPassword = await comparePassword(req.body.password,user_data.password);
-      if (validPassword) {
-        const payload = {
-          username: user_data.username
-        };
-        console.log('<------ payload ------>', payload);
-        const token = generateToken(payload);
-        console.log('<------ token ------>\n', token);
-        res.status(200).json({
-          message: "You have succesfully loggedin.",
-          token: token
-        });
-      } else {
-        res.status(403).json({
-          success: false,
-          message: 'Invalid username or password'
-        });
-      }
     }
+    const validPassword = await comparePassword(req.body.password, user_data.password);
+    if (validPassword) {
+      const payload = {
+        username: user_data.username,
+        firstName: user_data.firstName
+      };
+
+      console.log('<------ payload ------>', payload);
+      const token = generateToken(payload);
+      console.log('<------ token ------>\n', token);
+      res
+        .header('x-auth-token', token)
+        .header('access-control-expose-headers', 'x-auth-token')
+        .json({
+          success: true,
+          user: {
+            username: user_data.username,
+            email: user_data.email,
+            firstName: user_data.firstName,
+            lastName: user_data.lastName
+          }
+        });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: 'Invalid username or password'
+      });
+    }
+
   } catch (err) {
     console.log('<------ err ------>\n', err);
     res.status(400).json({
@@ -73,23 +88,25 @@ router.get('/login', async (req, res) => {
 //Register
 router.post('/register', async (req, res) => {
   //check user exist
-  const exist = await checkUsernameEmail(req.body.username,req.body.email);
+  const exist = await checkUsernameEmail(req.body.username, req.body.email);
   if (exist) {
     console.log('<------ existUser ------>');
     res.status(400).json({
       success: false,
       message: 'Username/ email already existed',
-      exist:exist
+      exist: exist
     });
   } else {
     const user = new User({
       ...req.body
     });
-    const { password } = req.body;
+    const {
+      password
+    } = req.body;
     const bPassword = await bcryptPassword(password);
     user.password = bPassword;
     user.confirm_password = 'You can\'t see';
-    user.displayname=user.username;
+    user.displayname = user.firstName;
     try {
       const newUser = await user.save();
       const payload = {
@@ -97,12 +114,17 @@ router.post('/register', async (req, res) => {
       };
       console.log('<------ payload ------>', payload);
       const token = generateToken(payload);
-      res.status(201).json({
-        status: 201,
-        token: token,
-        message: "New user created successfully"
-      });
-      console.log('<------ new user added ------>\n',newUser.username);
+      res
+        .header('x-auth-token', token)
+        .header('access-control-expose-headers', 'x-auth-token')
+        .json({
+          success: true,
+          username: user_data.username,
+          email: user_data.email,
+          firstName: user_data.firstName,
+          lastName: user_data.lastName
+        });
+      console.log('<------ new user added ------>\n', newUser.username);
       // console.log('ITEM-[%s] %s added', newUser._id, newUser.username);
     } catch (err) {
       console.log('<------ err ------>\n', err);
@@ -135,7 +157,7 @@ router.post('/wishlist', async (req, res) => {
   try {
     const user = await getUserByUsername(req.user.username);
     console.log('<------ req.body ------>\n', req.body);
-    user.wishlist=req.body;
+    user.wishlist = req.body;
     user.save();
     res.json(user.wishlist);
     console.log('<------ user.wishlist ------>\n', user.wishlist);
@@ -178,7 +200,7 @@ router.get('/address', async (req, res) => {
 router.post('/address', async (req, res) => {
   try {
     // console.log('<------ req.body ------>\n', req.body);
-    const user = await newAddress(req.user.username,req.body);
+    const user = await newAddress(req.user.username, req.body);
     res.json(user);
   } catch (err) {
     console.log('<------ err ------>\n', err);
@@ -208,7 +230,7 @@ router.get('/orders/:id', async (req, res) => {
   //find order and return if the order belongs to this user
   try {
     const order = await getOrderById(req.params.id);
-    if (order.username==req.user.username) {
+    if (order.username == req.user.username) {
       res.status(200).json({
         success: true,
         order

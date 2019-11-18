@@ -4,7 +4,7 @@ const User = require('../../models/users');
 const auth = require('../../middleware/auth');
 const {
   itemList
-} = require('../../somemethodstemp/itemMethods');
+} = require('../../utils/itemMethods');
 
 router.post('/', auth, async (req, res) => {
   try {

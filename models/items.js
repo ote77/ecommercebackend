@@ -31,6 +31,11 @@ const itemsSchema = mongoose.Schema({
     required: true,
     type: Number,
     default: 0
+  },
+  image: {
+    required: true,
+    type: String,
+    default: "noimageyet.jpg"
   }
 
 });

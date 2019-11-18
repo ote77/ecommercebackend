@@ -57,4 +57,4 @@ mongoose.connect(process.env.DB_LOCAL, {
   () => console.log('Database connected\n Enjoy debugging\n       :)')
 );
 
-app.listen(4000);
+app.listen(4000, '0.0.0.0');

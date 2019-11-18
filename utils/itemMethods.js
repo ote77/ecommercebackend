@@ -28,6 +28,7 @@ const addNewItem = async (item) => {
   const id = await nextId();
   const items = new Items({
     _id: id,
+    image: (id+".jpg"),
     ...item
   });
   const newItem = await items.save();

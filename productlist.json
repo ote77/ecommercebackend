@@ -1,0 +1,151 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Golden Hoop Earrings",
+      "price": 7.99,
+      "image": "1.jpg",
+      "description": "Hoops are on trend right now, which means that you’ll definitely want a pair of these in your jewelry box! They are made of copper alloy and plated with 18K gold. Their diameter is 50 mm and they are 2mm thick. "
+    },
+    {
+      "id": "2",
+      "name": "Circular Golden Hoop Earrings",
+      "price": 8.99,
+      "image": "2.jpg",
+      "description": "If you’re not a fan of traditional hoops, these ones are for you! With a little pendant element, they will be the perfect accessory for your summer look. They are made of zinc alloy and gold-plated. The earrings are lead- and nickel free, in order for your ears to be safe whilst wearing these beautiful pieces."
+    },
+    {
+      "id": "3",
+      "name": "Black & Gold Stainless Steel Studs",
+      "price": 8.99,
+      "image": "3.jpg",
+      "description": "Black and gold, a winning combination! Through their minimalistic design, these studs will give your outfit the necessary edge that it needs. Plus, they are made of stainless steel! They are made of zinc alloy and gold-plated. The earrings are lead-and nickel free, in order for your ears to be safe whilst wearing these beautiful pieces."
+    },
+    {
+      "id": "4",
+      "name": "Silver Pearl Earrings",
+      "price": 7.99,
+      "image": "4.jpg",
+      "description": "These silver pearl earrings are a staple amongst women of all ages. Through their delicate and elegant appearance, they are the perfect accessory to show discreetly that you are a woman with taste and that you know how to enhance your look with elegant earrings.The earrings are lead- and nickel free, in order for your ears to be safe whilst wearing these beautiful pieces. They are made of freshwater imitation pearls and 925 sterling silver. "
+    },
+    {
+      "id": "5",
+      "name": "Rose Gold Geometric Drop Earrings",
+      "price": 8.99,
+      "image": "5.jpg",
+      "description": "Who doesn’t like a gracious rose gold earring? These rose gold copper earrings will show the world that you’re not afraid to enhance your personal style with exciting jewelry pieces! The earrings are lead- and nickel free, in order for your ears to be safe whilst wearing these beautiful pieces."
+    },
+    {
+      "id": "6",
+      "name": "Silver Geometric Drop Earrings",
+      "price": 8.99,
+      "image": "6.jpg",
+      "description": "Simple, geometric and yet so fashionable! These silver copper earrings will show the world that you’re not afraid to enhance your personal style with exciting jewelry pieces! The earrings are lead-and nickel free, in order for your ears to be safe whilst wearing these beautiful pieces."
+    },
+    {
+      "id": "7",
+      "name": "Golden Clover Drop Earrings",
+      "price": 8.99,
+      "image": "7.jpg",
+      "description": "These golden four-leaf clover drop earrings are a wonderful choice for every woman. Four-leaf clovers represent good fortune. Additionally, this earring design can lengthen your neck line visually and make you even more elegant. They are perfect for both casual and formal occasions. The earrings are lead-and nickel free and are made of alloy and gold-plated. "
+    },
+    {
+      "id": "8",
+      "name": "Pearl Drop Earrings",
+      "price": 10.99,
+      "image": "8.jpg",
+      "description": "These pearl drop earrings are beautifully crafted with glistening silver accents. With their unique shape and elegant nature, they can light up your face and enhance your natural beauty. They are made of freshwater pearls and 925 sterling silver. The earrings are lead-and nickel free."
+    },
+    {
+      "id": "9",
+      "name": "Black & Gold Earrings",
+      "price": 7.99,
+      "image": "9.jpg",
+      "description": "These black and gold drop earrings are the perfect acessory for a fun, bold look. With their golden metal elements and unique circular shape, they are sure to catch the attention of anyone and make you feel bold and daring. They are made of zinc alloy and enamel and are lead-and nickel free. "
+    },
+    {
+      "id": "10",
+      "name": "Superwoman Golden Studs",
+      "price": 9.99,
+      "image": "10.jpg",
+      "description": "Go for a fun, unique look with these beautiful Superwoman studs. Made with 18K gold plating, these stainless steal earrings are the perfect addition to your seize-the-day look! The earrings are lead- and nickel free."
+    },
+    {
+      "id": "11",
+      "name": "Golden Tassel Earrings",
+      "price": 9.99,
+      "image": "11.jpg",
+      "description": "These feathered drop earrings add a lovely flirty accent to your feminine look. Made with rose-gold gemstone which glisten when you turn your head, these earrings are the perfect accessory to add extra airiness to your step. The earrings are lead-and nickel free and made of alloy and cotton."
+    },
+    {
+      "id": "12",
+      "name": "Silver Blue Studs",
+      "price": 9.99,
+      "image": "12.jpg",
+      "description": "Gems are a lady’s best friend! These pearlescent blue stones embedded in a silver fixture are a definite new staple for your collection. They also make the perfect gift for any engagement party, wedding, or anniversary! These earrings are made of stainless steel and are lead-and nickel free."
+    },
+    {
+      "id": "13",
+      "name": "Rose Gold Studs",
+      "price": 9.99,
+      "image": "13.jpg",
+      "description": "Gems are a lady’s best friend! These pearlescent pink stones embedded in a rose gold fixture are a definite new staple for your collection. They also make the perfect gift for any engagement party, wedding, or anniversary! These earrings are made of stainless steel and are lead-and nickel free."
+    },
+    {
+      "id": "14",
+      "name": "Black and White Geometric Statement Earrings",
+      "price": 7.99,
+      "image": "14.jpg",
+      "description": "These black and white drop earrings will help you show your boldness and creativity to the world! Not only are they colourful but their geometric design will make your outfit of the day stand out even more. They are made of acrylic and 18k gold and rhodium plating and are lead- and nickel free."
+    },
+    {
+      "id": "15",
+      "name": "Beige and Black Geometric Statement Earrings",
+      "price": 7.99,
+      "image": "15.jpg",
+      "description": "These beige and black earrings will help you show your boldness and creativity to the world! Not only are they colourful but their geometric design will make your outfit of the day stand out even more. They are made of acrylic and 18k gold and rhodium plating and are lead- and nickel free."
+    },
+    {
+      "id": "16",
+      "name": "Pink and Black Geometric Statement Earrings",
+      "price": 7.99,
+      "image": "16.jpg",
+      "description": "These pink and black drop earrings will help you show your boldness and creativity to the world! Not only are they colourful but their geometric design will make your outfit of the day stand out even more. They are made of acrylic and 18k gold and rhodium plating and are lead- and nickel free."
+    },
+    {
+      "id": "17",
+      "name": "Grey and Black Geometric Statement Earrings",
+      "price": 7.99,
+      "image": "17.jpg",
+      "description": "These grey and black drop earrings will help you show your boldness and creativity to the world! Not only are they colourful but their geometric design will make your outfit of the day stand out even more. They are made of acrylic and 18k gold and rhodium plating and are lead- and nickel free."
+    },
+    {
+      "id": "18",
+      "name": "Red and Black Geometric Statement Earrings",
+      "price": 7.99,
+      "image": "18.jpg",
+      "description": "These red and black drop earrings will help you show your boldness and creativity to the world! Not only are they colourful but their geometric design will make your outfit of the day stand out even more. They are made of acrylic and 18k gold and rhodium plating and are lead-and nickel free."
+    },
+    {
+      "id": "19",
+      "name": "Colorful Geometric Statement Earrings",
+      "price": 7.99,
+      "image": "19.jpg",
+      "description": "These multi-colored drop earrings will help you show your boldness and creativity to the world! Not only are they colourful but their geometric design will make your outfit of the day stand out even more. They are made of acrylic and 18k gold and rhodium plating and are lead- and nickel free."
+    },
+    {
+      "id": "20",
+      "name": "Black and Blue Geometric Statement Earrings",
+      "price": 7.99,
+      "image": "20.jpg",
+      "description": "These black and blue drop earrings will help you show your boldness and creativity to the world! Not only are they colourful but their geometric design will make your outfit of the day stand out even more. They are made of acrylic and 18k gold and rhodium plating and are lead- and nickel free."
+    },
+    {
+      "id": "21",
+      "name": "Golden Pearl Hoop Earrings",
+      "price": 9.99,
+      "image": "21.jpg",
+      "description": "Traditional hoops? Not for you! These golden pearl hoop earrings will grace your outfit with an intriguing stylistic choice. Not only do the freshwater pearl imitations glisten in the sun but the golden hanging bar ties the whole look together. These earrings are made of zinc alloy and gold plating and they are lead-and nickel free."
+    }
+  ]
+}

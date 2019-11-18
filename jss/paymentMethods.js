@@ -5,7 +5,7 @@ const {
 } = require('./createOrder');
 const {
   saveOrderToUser
-} = require('../somemethodstemp/userMethods');
+} = require('../utils/userMethods');
 
 //create Payment file for Paypal
 const createPayment = async (orderId, user) => {
@@ -77,14 +77,14 @@ let orderDetail = {};
     payment.transactions[0].amount.details.subtotal += orderDetail.items[i].quantity * orderDetail.items[i].price;
     // console.log('<------ payment.transactions[0].amount.details.subtotal ------>\n', payment.transactions[0].amount.details.subtotal);
   }
-
+  payment.transactions[0].amount.details.subtotal = payment.transactions[0].amount.details.subtotal.toFixed(2);
 
   payment.transactions[0].item_list.items = paymentItems;
   // console.log('<------ item_list.items ------>\n', payment.transactions[0].item_list.items);
   payment.transactions[0].invoice_number = orderDetail._id;
   payment.transactions[0].item_list.shipping_address = user.address;
   payment.payer.payer_info.email = user.email;
-  payment.transactions[0].amount.total = payment.transactions[0].amount.details.subtotal + payment.transactions[0].amount.details.shipping - payment.transactions[0].amount.details.shipping_discount;
+  payment.transactions[0].amount.total = payment.transactions[0].amount.details.subtotal;
 
 
   orderDetail.transactions=payment.transactions[0];
@@ -95,6 +95,7 @@ let orderDetail = {};
   // console.log('<------ orderDetail After create payment ------>\n', orderDetail);
   const result = {orderId:orderDetail._id,payment};
   // console.log('<------ orderId ------>:', orderDetail._id);
+  console.log('<------ result ------>\n', result.payment.transactions[0]);
   return result;
 };
 

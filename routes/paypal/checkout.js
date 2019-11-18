@@ -12,10 +12,10 @@ const {
 } = require('../../jss/paymentMethods');
 const {
   saveOrderToUser
-} = require('../../somemethodstemp/userMethods');
+} = require('../../utils/userMethods');
 const {
   getOrderById
-} = require('../../somemethodstemp/orderMethods');
+} = require('../../utils/orderMethods');
 //Paypal config
 
 const paypal = require('paypal-rest-sdk');
@@ -51,7 +51,8 @@ router.post('/payment', auth, async (req, res) => {
     //PayPal process
     paypal.payment.create(order.payment, function(error, payment) {
       if (error) {
-        console.log('<------ paypal.payment.create ------>\n', error);
+
+        console.log('<------ paypal.payment.create ------>\n', error.response.details);
       } else {
         console.log('<------ payid, orderID ------>');
         console.log(payment.id, order.orderId);

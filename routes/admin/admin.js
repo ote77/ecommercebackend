@@ -5,16 +5,16 @@ const adminauth = require('../../middleware/adminauth');
 
 const {
   getItemList,addNewItem,patchItem
-} = require('../../somemethodstemp/itemMethods');
+} = require('../../utils/itemMethods');
 const {
   getBriefOrderforAdmin,getOrderById,changeOrderStatus
-} = require('../../somemethodstemp/orderMethods');
+} = require('../../utils/orderMethods');
 const {
   getUserByUsername
-} = require('../../somemethodstemp/userMethods');
+} = require('../../utils/userMethods');
 const {
   generateToken, bcryptPassword, comparePassword
-} = require('../../somemethodstemp/securityMethods');
+} = require('../../utils/securityMethods');
 
 router.use(async (req, res, next) => {
   if (req.url != '/login' && req.url != '/register') {
@@ -46,10 +46,10 @@ router.get('/login', async (req, res) => {
       console.log('<------ payload ------>', payload);
       const token = generateToken(payload);
       console.log('<------ token ------>\n', token);
-      res.status(200).json({
-        message: "You have succesfully loggedin.",
-        token: token
-      });
+      res
+        .header('x-auth-token', token)
+        .header('access-control-expose-headers', 'x-auth-token')
+        .json({ success: true, username: user_data.username, email:user_data.email,firstName:user_data.firstName,lastName:user_data.lastName });
     } else {
       res.status(403).json({
         success: false,
@@ -77,10 +77,10 @@ router.post('/register', async (req, res) => {
     user.displayname=user.username;
     try {
       const newUser = await user.save();
-      res.status(201).json({
-        status: 201,
-        message: "New admin created successfully"
-      });
+      res
+        .header('x-auth-token', token)
+        .header('access-control-expose-headers', 'x-auth-token')
+        .json({ success: true, username: user_data.username, email:user_data.email,firstName:user_data.firstName,lastName:user_data.lastName });
       console.log('<------ new %s added ------>\n%s',newUser.user_type, newUser.username);
       // console.log('ITEM-[%s] %s added', newUser._id, newUser.username);
     } catch (err) {
@@ -165,11 +165,9 @@ router.patch('/items/:itemId', async (req, res) => {
 
 //Check User info
 router.get('/user/:id', async (req, res) => {
-  console.log('<------ ha ------>');
   try {
     // console.log('<------ req.body ------>\n', req.body);
     const user = await getUserByUsername(req.params.id);
-    console.log('<------ user. ------>');
     res.json(user);
   } catch (err) {
     console.log('<------ err ------>\n', err);
@@ -229,10 +227,25 @@ router.patch('/orders/:orderId', async (req, res) => {
 
 
 
-router.get('/Check', (req, res) => {
-  console.log('<------ check ------>');
-  console.log('<------ req.body ------>\n', req.user);
-  res.json(req.user);
+router.post('/itemlist', async (req, res) => {
+  try {
+    const itemList = require('../../productlist.json');
+    for (var i in itemList.products){
+      console.log('<------ products[i ------>\n', itemList.products[i]);
+      const newItem = await addNewItem(itemList.products[i]);
+      console.log('ITEM-[%s] %s added', newItem._id, newItem.name);
+    }
+    res.status(201).json({
+      success: true,
+      message: 'New item list added'
+    });
+  } catch (err) {
+    console.log('<------ err ------>\n', err);
+    res.status(400).json({
+      success: false,
+      message: err
+    });
+  }
 });
 
 

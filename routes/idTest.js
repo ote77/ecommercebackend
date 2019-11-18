@@ -13,7 +13,7 @@ const {
 } = require('../jss/paymentMethods');
 const {
   getUserByUsername, newAddress
-} = require('../somemethodstemp/userMethods');
+} = require('../utils/userMethods');
 //get back post lists.
 
 

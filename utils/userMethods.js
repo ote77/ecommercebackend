@@ -43,7 +43,7 @@ const saveOrderToUser = async (username,orderId) => {
         }
       }
     });
-    console.log('<------ userWithOrderId ------>\n', userWithOrderId);
+    // console.log('<------ userWithOrderId ------>\n', userWithOrderId.username);
     // console.log('<------ userWithOrderId ------>\n', userWithOrderId);
   } catch (e) {
     console.log('<------ e in saveOrderToUser ------>\n', e);

@@ -13,6 +13,8 @@ const usersSchema = mongoose.Schema({
     required: 'Please set a display name'
   },
   birthday:Date,
+  firstName: String,
+  lastName: String,
   user_type: {
     type: String,
     enum: ['client', 'admin', 'staff'],

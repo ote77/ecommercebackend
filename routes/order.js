@@ -5,7 +5,7 @@ const Order = require('../models/orders');
 //get one order , update one order
 const {
   getOrderById,getBriefOrder
-} = require('../somemethodstemp/orderMethods');
+} = require('../utils/orderMethods');
 //get back an order by id.
 router.get('/:orderId', async (req, res) => {
   try {
