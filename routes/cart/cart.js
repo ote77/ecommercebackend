@@ -32,7 +32,7 @@ router.get('/', auth, async (req, res) => {
     const items = await itemList(user.cart);
     res.status(200).json({
       success: true,
-      message: items
+      cart: items
     });
   } catch (err) {
     console.log('<------ err ------>\n', err);

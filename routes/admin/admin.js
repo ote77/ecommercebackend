@@ -231,7 +231,6 @@ router.post('/itemlist', async (req, res) => {
   try {
     const itemList = require('../../productlist.json');
     for (var i in itemList.products){
-      console.log('<------ products[i ------>\n', itemList.products[i]);
       const newItem = await addNewItem(itemList.products[i]);
       console.log('ITEM-[%s] %s added', newItem._id, newItem.name);
     }

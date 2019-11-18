@@ -95,7 +95,6 @@ let orderDetail = {};
   // console.log('<------ orderDetail After create payment ------>\n', orderDetail);
   const result = {orderId:orderDetail._id,payment};
   // console.log('<------ orderId ------>:', orderDetail._id);
-  console.log('<------ result ------>\n', result.payment.transactions[0]);
   return result;
 };
 

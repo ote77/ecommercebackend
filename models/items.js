@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const itemsSchema = mongoose.Schema({
   _id: {
     required: true,
-    type: Number,
+    type: String,
     default: 0
   },
   name: {

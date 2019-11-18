@@ -174,7 +174,10 @@ router.get('/wishlist', async (req, res) => {
     // console.log('<------ req.body ------>\n', req.body);
     const user = await getUserByUsername(req.user.username);
     const items = await itemList(user.wishlist);
-    res.json(items);
+    res.status(200).json({
+      success: true,
+      wishlist: items
+    });
   } catch (err) {
     console.log('<------ err ------>\n', err);
     res.json({
