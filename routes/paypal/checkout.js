@@ -37,14 +37,16 @@ router.get('/payments/:payId', (req, res) => {
   });
 });
 
-//combine stage one with stage two
+//make a payment
 router.post('/payment', auth, async (req, res) => {
   console.log('<------ Creating payment by %s ------>', req.user.username);
   var order;
   try {
     order = await createPayment2(req.body.items, req.body.user, req.user.username);
     // console.log('<------ return order ------>\n', order);
-    saveOrderToUser(req.body.user.username, order.orderId);
+    console.log('<------ title ------>\n', req.user.username);
+    console.log('<------ order.orderId ------>\n', order.orderId);
+    saveOrderToUser(req.user.username, order.orderId);
 
     //PayPal process
     paypal.payment.create(order.payment, function(error, payment) {
@@ -75,28 +77,6 @@ router.post('/payment', auth, async (req, res) => {
 
 });
 
-router.get('/orders/checkout/:id', async (req, res) => {
-  //find order and return if the order belongs to this user
-  try {
-    const order = await getOrderById(req.params.id);
-    if (order.username == req.user.username) {
-      res.status(200).json({
-        success: true,
-        order
-      });
-    } else {
-      res.status(403).json({
-        success: false,
-        message: 'Unauthorized'
-      });
-    }
-  } catch (err) {
-    res.status(404).json({
-      success: false,
-      message: "Order could not be found"
-    });
-  }
-});
 //repay the order.
 router.post('/payment/:orderId', async (req, res) => {
   try {
@@ -124,6 +104,7 @@ router.post('/payment/:orderId', async (req, res) => {
   });
 });
 
+//verify the transction with the original order
 router.get('/process', async (req, res) => {
   console.log("catched /process");
   let transactions = {};

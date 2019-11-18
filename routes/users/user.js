@@ -36,33 +36,34 @@ router.get('/login', async (req, res) => {
       "username": req.body.username
     });
     if (!user_data) {
-      res.status(401).json({
-        status: 401,
-        message: "Invalid username.",
-      });
-    }
-    const validPassword = await comparePassword(req.body.password,user_data.password);
-    if (validPassword) {
-      const payload = {
-        username: user_data.username
-      };
-      console.log('<------ payload ------>', payload);
-      const token = generateToken(payload);
-      console.log('<------ token ------>\n', token);
-      res.status(200).json({
-        message: "You have succesfully loggedin.",
-        token: token
+      res.status(400).json({
+        success: false,
+        message: "Invalid username or password.",
       });
     } else {
-      res.status(403).json({
-        success: false,
-        message: 'Invalid password'
-      });
+      const validPassword = await comparePassword(req.body.password,user_data.password);
+      if (validPassword) {
+        const payload = {
+          username: user_data.username
+        };
+        console.log('<------ payload ------>', payload);
+        const token = generateToken(payload);
+        console.log('<------ token ------>\n', token);
+        res.status(200).json({
+          message: "You have succesfully loggedin.",
+          token: token
+        });
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Invalid username or password'
+        });
+      }
     }
   } catch (err) {
     console.log('<------ err ------>\n', err);
-    res.status(401).json({
-      status: 401,
+    res.status(400).json({
+      success: false,
       message: err
     });
   }
@@ -150,7 +151,7 @@ router.get('/wishlist', async (req, res) => {
   try {
     // console.log('<------ req.body ------>\n', req.body);
     const user = await getUserByUsername(req.user.username);
-    const items = await itemList(user.wishlist,res);
+    const items = await itemList(user.wishlist);
     res.json(items);
   } catch (err) {
     console.log('<------ err ------>\n', err);

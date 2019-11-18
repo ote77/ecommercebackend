@@ -44,14 +44,13 @@ const patchItem = async (id,item) => {
   return modifiedItem;
 };
 
+
 //Used to get map item list in cart and wishlist.
-const itemList = async (items, res) => {
+const itemList = async (items) => {
   console.log(items);
-  // Creat order in front or back?
   for (var i in items) {
     let stockItems;
     try {
-      // console.log('<------ items[i]._id ------>\n', items[i]._id);
       stockItems = await Items.findById(items[i]._id);
     } catch (e) {
       console.log(e);
@@ -65,6 +64,7 @@ const itemList = async (items, res) => {
       }
     } else {
       items[i].status="Unavailable";
+      items[i].quantity = 0;
     }
   }
 

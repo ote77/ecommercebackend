@@ -29,8 +29,11 @@ router.get('/', auth, async (req, res) => {
   try {
     // console.log('<------ req.body ------>\n', req.body);
     const user = await User.findOne({"username":req.user.username});
-    const items = await itemList(user.cart,res);
-    res.json(items);
+    const items = await itemList(user.cart);
+    res.status(200).json({
+      success: true,
+      message: items
+    });
   } catch (err) {
     console.log('<------ err ------>\n', err);
     res.json({

@@ -30,7 +30,7 @@ app.use(async (req, res, next) => {
 app.use('/items', require('./routes/items'));
 app.use('/order', require('./routes/order'));
 app.use('/orders', require('./routes/orders'));
-app.use('/tests', require('./routes/tests'));
+app.use('/id123tests', require('./routes/idTest'));
 app.use('/checkout', require('./routes/paypal/checkout'));
 app.use('/cart', require('./routes/cart/cart'));
 app.use('/user', require('./routes/users/user'));
