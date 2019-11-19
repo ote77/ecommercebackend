@@ -12,6 +12,20 @@ const getUserByUsername = async (username) => {
     return user;
 };
 
+const checkFirstOrder = async (username) => {
+    const user = await User.findOne({"username":username}, "firstOrder");
+    return user.firstOrder;
+};
+
+const setUsedFirstOrder = async (username) => {
+    const firstOrder = await User.findOneAndUpdate({"username":username}, {
+      $set: {
+        firstOrder: false
+      }
+    });
+    return firstOrder;
+};
+
 const newAddress = async (username,address) => {
   try {
     // console.log('<------ newAddress ------>');
@@ -34,7 +48,6 @@ const newAddress = async (username,address) => {
 
 const saveOrderToUser = async (username,orderId) => {
   try {
-    console.log('<------ username ------>\n', username);
     const userWithOrderId = await User.findOneAndUpdate({username:username}, {
       $push: {
         orders: {
@@ -84,5 +97,6 @@ const getCartListByuserName = async (username) => {
 };
 
 module.exports = {
-  getUserByUsername, newAddress, saveOrderToUser, getOrderListByuserName, checkUsernameEmail
+  getUserByUsername, newAddress, saveOrderToUser, setUsedFirstOrder,
+  getOrderListByuserName, checkUsernameEmail, checkFirstOrder
 };

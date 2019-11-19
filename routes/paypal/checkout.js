@@ -41,10 +41,8 @@ router.post('/payment', auth, async (req, res) => {
   console.log('<------ Creating payment by %s ------>', req.user.username);
   var order;
   try {
+    //req.body.user: shipping address.
     order = await createPayment(req.body.items, req.body.user, req.user.username);
-    // console.log('<------ return order ------>\n', order);
-    console.log('<------ title ------>\n', req.user.username);
-    console.log('<------ order.orderId ------>\n', order.orderId);
     saveOrderToUser(req.user.username, order.orderId);
 
     //PayPal process
@@ -53,7 +51,6 @@ router.post('/payment', auth, async (req, res) => {
 
         console.log('<------ paypal.payment.create ------>\n', error.response.details);
       } else {
-        console.log('<------ payid, orderID ------>');
         console.log(payment.id, order.orderId);
         for (let link of payment.links) {
           if (link.rel === 'approval_url') {
@@ -106,7 +103,6 @@ router.post('/payment/:orderId', async (req, res) => {
 
 //verify the transction with the original order
 router.get('/process', async (req, res) => {
-  console.log("catched /process");
   let transactions = {};
   try {
     // console.log('<------ req.query.paymentId ------>\n', req.query.paymentId);

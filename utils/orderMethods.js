@@ -42,13 +42,12 @@ const changeOrderStatus = async (id,status) => {
   });
   return updatedOrder;
 };
-const getDetailOrder = async (orderId) => {
-  console.log('<------ getBriefOrder ------>\n', orderId);
-
+const removeOrder = async (filter) => {
+  const removedOrder = await Order.deleteMany(filter);
 };
 
 
 
 module.exports = {
-  getOrderById,getBriefOrder,getBriefOrderforAdmin,changeOrderStatus
+  getOrderById,getBriefOrder,getBriefOrderforAdmin,changeOrderStatus,removeOrder
 };

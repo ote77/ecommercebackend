@@ -40,7 +40,7 @@ const html = template(data);
 let mailOptions = {
   from: '"Ote" <oty1994@hotmail.com>', // sender address
   to: email, // list of receivers
-  subject: 'Welcome to Flawless', // Subject line
+  subject: title, // Subject line
   // text: 'Hello world?', // plain text body
   html: html // html body
 };

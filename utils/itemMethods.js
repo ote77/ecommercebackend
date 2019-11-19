@@ -15,12 +15,12 @@ const getItemList = async (filter,user_type) => {
    items = await Items.find(filter,'-__v');
   } else {
    items = await Items.find(filter,'-__v -status');
-  }
   if (items.length==0) {
     throw 'Unable to find';
   } else {
     return items;
   }
+}
 };
 
 // New item:
@@ -58,22 +58,17 @@ const itemList = async (items) => {
       console.log(e);
     }
     if (stockItems && stockItems.status=="Sale") {
-      console.log('<------ item1 ------>\n', items[i]);
       items[i].price = stockItems.price;
       items[i].name = stockItems.name;
-      console.log('<------ item2 ------>\n', items[i]);
 
       //quantity max: stock.
       if (items[i].quantity >= stockItems.stock) {
-        console.log('<------ haha ------>');
         items[i].quantity = stockItems.stock;
       }
-      console.log('<------ item3 ------>\n', items[i]);
 
     } else {
       items[i].status="Unavailable";
       items[i].quantity = 0;
-      console.log('<------ item4 ------>\n', items[i]);
 
     }
   }

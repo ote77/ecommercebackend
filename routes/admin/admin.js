@@ -7,7 +7,7 @@ const {
   getItemList,addNewItem,patchItem
 } = require('../../utils/itemMethods');
 const {
-  getBriefOrderforAdmin,getOrderById,changeOrderStatus
+  getBriefOrderforAdmin,getOrderById,changeOrderStatus,removeOrder
 } = require('../../utils/orderMethods');
 const {
   getUserByUsername
@@ -96,6 +96,7 @@ router.post('/register', async (req, res) => {
 //get item list
 router.get('/items', async (req, res) => {
   try {
+
     const items = await getItemList(req.body.filter,req.user.user_type);
     res.status(200).json({
       success: true,
@@ -247,5 +248,19 @@ router.post('/itemlist', async (req, res) => {
   }
 });
 
+router.delete('/orders/', async (req, res) => {
+  try {
+    const removedOrders = await removeOrder(req.body.filter);
+    res.status(200).json({
+      success: true,
+      message: 'Removed'
+    });
+  } catch (err) {
+    console.log('<------ err in delete orders ------>\n', err);
+    res.json({
+      message: err
+    });
+  }
+});
 
 module.exports = router;
