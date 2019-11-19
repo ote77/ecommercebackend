@@ -7,8 +7,7 @@ const {
   savePayid,
   createPayment,
   getTransctions,
-  recordSuccessPayment,
-  createPayment2
+  recordSuccessPayment
 } = require('../../jss/paymentMethods');
 const {
   saveOrderToUser
@@ -42,7 +41,7 @@ router.post('/payment', auth, async (req, res) => {
   console.log('<------ Creating payment by %s ------>', req.user.username);
   var order;
   try {
-    order = await createPayment2(req.body.items, req.body.user, req.user.username);
+    order = await createPayment(req.body.items, req.body.user, req.user.username);
     // console.log('<------ return order ------>\n', order);
     console.log('<------ title ------>\n', req.user.username);
     console.log('<------ order.orderId ------>\n', order.orderId);

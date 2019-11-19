@@ -29,6 +29,7 @@ const addNewItem = async (item) => {
   const items = new Items({
     _id: id,
     image: (id+".jpg"),
+    stock: 10,
     ...item
   });
   const newItem = await items.save();
@@ -48,7 +49,7 @@ const patchItem = async (id,item) => {
 
 //Used to get map item list in cart and wishlist.
 const itemList = async (items) => {
-  console.log(items);
+  // console.log(items);
   for (var i in items) {
     let stockItems;
     try {
@@ -57,15 +58,23 @@ const itemList = async (items) => {
       console.log(e);
     }
     if (stockItems && stockItems.status=="Sale") {
+      console.log('<------ item1 ------>\n', items[i]);
       items[i].price = stockItems.price;
       items[i].name = stockItems.name;
+      console.log('<------ item2 ------>\n', items[i]);
+
       //quantity max: stock.
       if (items[i].quantity >= stockItems.stock) {
+        console.log('<------ haha ------>');
         items[i].quantity = stockItems.stock;
       }
+      console.log('<------ item3 ------>\n', items[i]);
+
     } else {
       items[i].status="Unavailable";
       items[i].quantity = 0;
+      console.log('<------ item4 ------>\n', items[i]);
+
     }
   }
 

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../../models/users');
 const auth = require('../../middleware/auth');
+const {mailService} = require('../../utils/nodeMailer/welcome/transporter');
 const {
   getUserByUsername,
   newAddress,
@@ -110,8 +111,17 @@ router.post('/register', async (req, res) => {
     try {
       const newUser = await user.save();
       const payload = {
-        username: user.username
+        username: user.username,
+        firstName: user.firstName
       };
+      const message = {
+        title: user.firstName,
+        coupon: 'HappyShop',
+      };
+
+      //nodeMailer
+      mailService(message,user.email,'welcome');
+
       console.log('<------ payload ------>', payload);
       const token = generateToken(payload);
       res
@@ -119,13 +129,15 @@ router.post('/register', async (req, res) => {
         .header('access-control-expose-headers', 'x-auth-token')
         .json({
           success: true,
-          username: user_data.username,
-          email: user_data.email,
-          firstName: user_data.firstName,
-          lastName: user_data.lastName
-        });
+          user: {
+            username: user.username,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName
+          }
+          });
       console.log('<------ new user added ------>\n', newUser.username);
-      // console.log('ITEM-[%s] %s added', newUser._id, newUser.username);
+      console.log('<------ token ------>\n', token);
     } catch (err) {
       console.log('<------ err ------>\n', err);
       res.status(500).json({
@@ -141,7 +153,7 @@ router.post('/register', async (req, res) => {
 router.get('/info', async (req, res) => {
   try {
     // console.log('<------ req.body ------>\n', req.body);
-    const user = await getUserByUsername(req.user.username);
+    const user = await User.findOne({"username":req.user.username}, "username email firstName lastName birthday orders cart");
     res.json(user);
   } catch (err) {
     console.log('<------ err ------>\n', err);

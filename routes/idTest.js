@@ -6,12 +6,6 @@ const {
   nextId
 } = require('../jss/addid');
 const {
-  createPayment
-} = require('../jss/createPayment');
-const {
-  getTransctions
-} = require('../jss/paymentMethods');
-const {
   getUserByUsername, newAddress
 } = require('../utils/userMethods');
 //get back post lists.

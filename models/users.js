@@ -42,8 +42,11 @@ const usersSchema = mongoose.Schema({
       postal_code: String,
       state: String,
       default: Boolean
-
   }],
+  firstOrder:{
+    type:Boolean,
+    default:true
+  },
   cart: Array,
   wishlist: Array,
   orders: [{type: String}]
