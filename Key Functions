@@ -1,33 +1,55 @@
-Ecommerce backend
+Flawless backend
+- [x] API Documnet
+- [ ] Delete unpaid order by user
+- [ ] coupon
+- [ ] TDD!!
+- [x] route items
+Admin:
+- [x] New admin database
+- [x] Admin auth login
+- [x] manage user
+    - [ ] See user info
+- [ ] manage item
+    - [x] ADD Suspended items, manage items
+    - [x] admin can check any item but users can only check “sale” items
+- [x] manage orders
+    - [x] check
+    - [x] change status
+    - [ ] Add tracking information
+    - [ ] Add postage date
 User:
+- [x] Can only see ‘on sale’ items
+- [x] Can only see own orders
+- [x] Date of birth in db
+- [x] Welcome, order email
+    - [x] ejs
+- [x] check password
+    - [x]  Encrypt password in db
+    - [x] bcrypt
+- [x] check username existed or not when register
+    - [x] email
+    - [x] username
 - [x] add item to cart BD
 - [x] get cart items
 - [x] wishlist post/get
+- [x] verify items availbility when get cart/wishlist
 - [ ] manage address and Get/post
     - [x] set the first to default
-    - [ ] Change Default
+    - [ ] //Change Default
 - [ ] //Add order by cart
 Checkout
+- [x] checkout using auth to get username
 - [x] One step payment using User info and items
-    - [ ] discount
+    - [x] discount  ?
     - [ ] Check stock again before payment
-    - [ ] repay the order. (by link / payID/ order detail)
+    - [x] repay the order. (by link / payID/ order detail)
     - [x] save orderID in userdb (after created)
         - [x] new order save first
     - [x] store PayPal transaction ID
-- [ ] check username existed or not when register
-    - [x] username
-    - [ ] email
-- [ ] Processing paid order
-    - [ ] Send email
-    - [ ] Check status
+
+- [x] Processing paid order
+    - [x] Send email
+    - [x] Check status
 - [x] get user info by token
     - [x] order list with brief detail
     - [x] check order belong to this user only
-- [ ] Admin Part
-    - [x] Admin auth login
-    - [x] manage user
-    - [ ] manage item
-    - [ ] manage orders
-        - [x] check
-        - [ ] change status

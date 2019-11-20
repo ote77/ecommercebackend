@@ -8,6 +8,7 @@ const {
 } = require('../utils/userMethods');
 const {mailService} = require('../utils/nodeMailer/welcome/transporter');
 
+// items from cart
 //user: username,shipping_address
 // first-order-or-not
 const createPayment = async (items, user, username) => {
@@ -23,10 +24,11 @@ let orderDetail = {};
   let subtotal = 0;
   let discount = 0;
   let total = 0;
+  // Turn item list into PayPal format
   for (var i in orderDetail.items) {
     paymentItems[i] = {
       "name": orderDetail.items[i].name,
-      "description": "change to items.description after database",
+      "description": orderDetail.description,
       "quantity": orderDetail.items[i].quantity,
       "price": orderDetail.items[i].price,
       "sku": orderDetail.items[i]._id,
@@ -36,7 +38,8 @@ let orderDetail = {};
     // console.log('<------ payment.transactions[0].amount.details.subtotal ------>\n', payment.transactions[0].amount.details.subtotal);
   }
   subtotal = subtotal.toFixed(2);
-  //first user discount, can be changed to any type of discount
+  // First user discount, can be changed to any type of discount
+  // Or to userCoupons
   const firstOrder = await checkFirstOrder(username);
   console.log('<------ firstOrder? ------>\n', firstOrder);
   if (firstOrder) {
@@ -67,11 +70,6 @@ let orderDetail = {};
     }
   };
   payment.payer.payer_info.email = user.email;
-  // payment.transactions[0].item_list.items = paymentItems;
-  // // console.log('<------ item_list.items ------>\n', payment.transactions[0].item_list.items);
-  // payment.transactions[0].invoice_number = orderDetail._id;
-  // payment.transactions[0].item_list.shipping_address = user.address;
-  // payment.transactions[0].amount.total = payment.transactions[0].amount.details.subtotal;
 
 
   orderDetail.transactions=payment.transactions[0];
@@ -79,9 +77,7 @@ let orderDetail = {};
   orderDetail.address=user.address;
   orderDetail.status= "Created";
   orderDetail.save();
-  // console.log('<------ orderDetail After create payment ------>\n', orderDetail);
   const result = {orderId:orderDetail._id,payment};
-  // console.log('<------ orderId ------>:', orderDetail._id);
   return result;
 };
 
@@ -104,8 +100,6 @@ const savePayid = async (id,payId) => {
 const getTransctions = async (payId) => {
   try {
     const payment = await Order.findOne({payid:payId});
-    // console.log('<------ getTransctions ------>\n', payment.transactions);
-    // console.log('<------ payment ------>\n', payment);
     return payment.transactions;
   } catch (err) {
     console.log('<------ err in getTransctions ------>\n', err);
@@ -122,12 +116,13 @@ const recordSuccessPayment = async (payId,transactionId) => {
         transactionID: transactionId
       }
     });
+    //send confirmation email.
     let message ={
       title:updatedOrder.address.recipient_name,
       orderNumber:updatedOrder._id,
     };
-    //send confirmation email.
     mailService(message,updatedOrder.username,'order');
+    //Set firstOrder: false
     setUsedFirstOrder(updatedOrder.username);
     console.log('<------ transactionId ------>\n', transactionId);
     return updatedOrder;

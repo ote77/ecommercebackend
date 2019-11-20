@@ -24,18 +24,6 @@ paypal.configure({
   client_secret: process.env.CLIENT_SERECT
 });
 
-
-router.get('/payments/:payId', (req, res) => {
-  var paymentId = req.params.payId;
-  paypal.payment.get(paymentId, function(error, payment) {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(payment);
-    }
-  });
-});
-
 //make a payment
 router.post('/payment', auth, async (req, res) => {
   console.log('<------ Creating payment by %s ------>', req.user.username);
@@ -134,9 +122,16 @@ router.get('/process', async (req, res) => {
   });
 });
 
-router.get('/approved', (req, res) => {
-  res.json({
-    message: "success!"
+router.get('/payments/:payId', (req, res) => {
+  var paymentId = req.params.payId;
+  paypal.payment.get(paymentId, function(error, payment) {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(payment);
+    }
   });
 });
+
+
 module.exports = router;

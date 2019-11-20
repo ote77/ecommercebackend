@@ -49,11 +49,12 @@ const patchItem = async (id,item) => {
 
 //Used to get map item list in cart and wishlist.
 const itemList = async (items) => {
+  let cartTotal = 0;
   // console.log(items);
   for (var i in items) {
     let stockItems;
     try {
-      stockItems = await Items.findById(items[i]._id);
+      stockItems = await Items.findById(items[i].id);
     } catch (e) {
       console.log(e);
     }
@@ -64,16 +65,23 @@ const itemList = async (items) => {
       //quantity max: stock.
       if (items[i].quantity >= stockItems.stock) {
         items[i].quantity = stockItems.stock;
+        items[i].status="MaxQuantity";
       }
 
     } else {
       items[i].status="Unavailable";
       items[i].quantity = 0;
-
+      continue;
     }
+    items[i].totalPrice=(items[i].quantity*items[i].price);
+    cartTotal += items[i].totalPrice;
   }
-
-  return items;
+  cartTotal = cartTotal.toFixed(2);
+  const cart = {
+    cartTotal,
+    items
+  };
+  return cart;
 };
 
 

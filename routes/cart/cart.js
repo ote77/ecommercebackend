@@ -8,14 +8,14 @@ const {
 
 router.post('/', auth, async (req, res) => {
   try {
-    // console.log('<------ req.body ------>\n', req.body);
+    console.log('<------ req.body ------>\n', req.body);
     const user = await User.findOne({"username":req.user.username});
-    const cart = req.body;
-    user.cart = cart;
+    user.cart = req.body.cart;
+    const items = await itemList(req.body.cart);
     user.save();
     res.status(200).json({
       success: true,
-      message: 'Successfully add to cart'
+      cart: items
     });
   } catch (err) {
     console.log('<------ err ------>\n', err);

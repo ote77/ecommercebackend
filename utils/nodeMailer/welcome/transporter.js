@@ -21,7 +21,7 @@ const mailService = (data,email,type) => {
 switch(type) {
      case 'welcome':
      console.log('<------ welcome ------>');
-        tempName = 'welcome.ejs';
+        tempName = 'welcomecoupon.ejs';
         title = 'Welcome to Flawless';
         break;
      case 'order':

@@ -74,6 +74,20 @@ const getOrderListByuserName = async (username) => {
   return orderList;
 };
 
+const addItemToWishlist = async (username,itemId) => {
+  try {
+    const item = await User.findOneAndUpdate({username:username}, {
+      $addToSet: {
+        wishlist:
+          {_id:itemId}
+      }
+      // $addToSet: {wishlist: {_id:itemId}}
+    });
+  } catch (e) {
+    console.log('<------ e in saveOrderToUser ------>\n', e);
+  }
+};
+
 const checkUsernameEmail = async (username,email) => {
   let exist;
   const existUsername = await User.findOne({username:username});
@@ -86,6 +100,7 @@ const checkUsernameEmail = async (username,email) => {
   console.log('<------ exist ------>\n', exist);
   return exist;
 };
+
 const getCartListByuserName = async (username) => {
   const user = await getUserByUsername(username);
   let orderList=[];
@@ -98,5 +113,6 @@ const getCartListByuserName = async (username) => {
 
 module.exports = {
   getUserByUsername, newAddress, saveOrderToUser, setUsedFirstOrder,
-  getOrderListByuserName, checkUsernameEmail, checkFirstOrder
+  getOrderListByuserName, checkUsernameEmail,
+  checkFirstOrder, addItemToWishlist
 };

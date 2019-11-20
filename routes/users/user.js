@@ -7,7 +7,8 @@ const {
   getUserByUsername,
   newAddress,
   getOrderListByuserName,
-  checkUsernameEmail
+  checkUsernameEmail,
+  addItemToWishlist
 } = require('../../utils/userMethods');
 const {
   itemList
@@ -54,7 +55,7 @@ router.post('/login', async (req, res) => {
         firstName: user_data.firstName
       };
 
-      console.log('<------ payload ------>', payload);
+      // console.log('<------ payload ------>', payload);
       const token = generateToken(payload);
       console.log('<------ token ------>\n', token);
       res
@@ -114,9 +115,10 @@ router.post('/register', async (req, res) => {
         username: user.username,
         firstName: user.firstName
       };
+      // Email information
       const message = {
         title: user.firstName,
-        coupon: 'HappyShop',
+        coupon: '10',
       };
 
       //nodeMailer
@@ -154,10 +156,14 @@ router.get('/info', async (req, res) => {
   try {
     // console.log('<------ req.body ------>\n', req.body);
     const user = await User.findOne({"username":req.user.username}, "username email firstName lastName birthday orders cart");
-    res.json(user);
+    res.status(200).json({
+      success: true,
+      info: user
+    });
   } catch (err) {
     console.log('<------ err ------>\n', err);
-    res.json({
+    res.status(400).json({
+      success: false,
       message: err
     });
   }
@@ -165,16 +171,36 @@ router.get('/info', async (req, res) => {
 //wishlist   ----->
 //add wishlist to user db
 router.post('/wishlist', async (req, res) => {
-  console.log(req.user);
   try {
     const user = await getUserByUsername(req.user.username);
     console.log('<------ req.body ------>\n', req.body);
     user.wishlist = req.body;
     user.save();
-    res.json(user.wishlist);
+    res.status(200).json({
+      success: true,
+      message: 'Successfully add to wishlist'
+    });
     console.log('<------ user.wishlist ------>\n', user.wishlist);
   } catch (err) {
-    res.json({
+    res.status(400).json({
+      success: false,
+      message: err
+    });
+  }
+});
+
+router.post('/wishlist/:itemId', async (req, res) => {
+  try {
+    const user = await addItemToWishlist(req.user.username,req.params.itemId);
+    console.log('<------ Add item[%s] to wishlist ------>', req.params.itemId);
+    res.status(200).json({
+      success: true,
+      message: 'Successfully add to wishlist'
+    });
+  } catch (err) {
+    console.log('<------ err ------>\n', err);
+    res.status(400).json({
+      success: false,
       message: err
     });
   }
@@ -192,7 +218,8 @@ router.get('/wishlist', async (req, res) => {
     });
   } catch (err) {
     console.log('<------ err ------>\n', err);
-    res.json({
+    res.status(400).json({
+      success: false,
       message: err
     });
   }
@@ -234,8 +261,9 @@ router.get('/orders', async (req, res) => {
       orderList
     });
   } catch (err) {
-    res.json({
-      message: err
+    res.status(404).json({
+      success: false,
+      message: "Order could not be found"
     });
   }
 });
@@ -264,68 +292,7 @@ router.get('/orders/:id', async (req, res) => {
   }
 });
 
-router.get('/test1', async (req, res) => {
-  console.log(req.body);
-  try {
-    console.log('<------ haha ------>\n');
-    res.send('haha');
-  } catch (err) {
-    res.json({
-      message: err
-    });
-  }
-});
 
 
-
-//add auth in routes.[test]
-router.get('/Check', (req, res) => {
-  console.log('<------ use ------>');
-  console.log('<------ req.body ------>\n', req.body);
-});
-
-// test auth check
-router.use('/test', (req, res, next) => {
-  const token = req.headers['x-access-token'];
-  console.log('<------ x-access-token ------>', token);
-  if (token) {
-    jwt.verify(token, process.env.JWT_SCRECT, (err, decoded) => {
-      console.log('<------ decoded ------>\n', decoded);
-      if (err) {
-        return res.json({
-          status: 403,
-          success: false,
-          message: 'Failed to authenticate token.'
-        });
-      } else {
-        req.decoded = decoded;
-        res.status(200).json({
-          message: "You have succesfully loggedin with token."
-        });
-        // next();
-      }
-    });
-  } else {
-    return res.json({
-      status: 403,
-      success: false,
-      message: 'No token.'
-    });
-  }
-});
-
-//append orderID
-router.get('/test2', async (req, res) => {
-  //need to check if username exists.
-  try {
-    console.log('<------ haha ------>\n');
-    res.send('haha');
-    // console.log('ITEM-[%s] %s added', newUser._id, newUser.username);
-  } catch (err) {
-    res.json({
-      message: err
-    });
-  }
-});
 
 module.exports = router;
