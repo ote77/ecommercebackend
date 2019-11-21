@@ -1,8 +1,8 @@
 {
   "intent": "sale",
   "redirect_urls": {
-    "return_url": "http://127.0.0.1:4000/checkout/process",
-    "cancel_url": "http://127.0.0.1:4000/checkout/cancel"
+    "return_url": "13.55.88.254:4000/checkout/process",
+    "cancel_url": "13.55.88.254:4000/checkout/cancel"
   },
   "transactions": [{
     "amount": {
