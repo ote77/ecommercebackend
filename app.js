@@ -54,7 +54,7 @@ mongoose.connect(process.env.DB_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   },
-  () => console.log('Database connected\n Enjoy debugging\n       :)')
+  () => console.log('Database connected\n auto .. Enjoy debugging\n       :)')
 );
 
 // app.listen(4000, '0.0.0.0');
