@@ -124,6 +124,7 @@ router.get('/process', async (req, res) => {
 
 router.get('/payments/:payId', (req, res) => {
   var paymentId = req.params.payId;
+  console.log('<------ paymentId ------>\n', paymentId);
   paypal.payment.get(paymentId, function(error, payment) {
     if (error) {
       console.log(error);
