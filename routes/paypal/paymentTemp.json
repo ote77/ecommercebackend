@@ -31,7 +31,7 @@
       "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
     }
   }],
-  "note_to_payer": "Contact us for any questions on your order.",
+  "note_to_payer": "Contact us for any questions.",
   "payer": {
     "payment_method": "paypal",
     "payer_info": {
