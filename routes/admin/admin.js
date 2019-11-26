@@ -18,7 +18,7 @@ const {
 
 router.use(async (req, res, next) => {
   if (req.url != '/login' && req.url != '/register') {
-    console.log('[ adminauth in] ', req.url );
+    // console.log('[ adminauth in] ', req.url );
     adminauth(req, res, next);
   } else {
     next();
@@ -183,7 +183,7 @@ router.get('/orders', async (req, res) => {
   try {
     const order = await getBriefOrderforAdmin(req.body.filter);
     res.json(order);
-    console.log(order);
+    // console.log(order);
   } catch (err) {
     res
       .status(404)

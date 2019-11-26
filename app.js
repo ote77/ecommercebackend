@@ -12,24 +12,27 @@ app.use(express.json());
 
 require('dotenv/config');
 
+
 app.use(cors());
 //Import route
 // const itemsRoute = require('./routes/items');
 //middleware
 app.use(async (req, res, next) => {
-  console.log('[%s] %s', req.method, req.url);
+  // const start = Date.now();
+  // console.log('<------ typeof start ------>\n', typeof start);
+  console.log('%s ------------- [%s] %s',new Date().toLocaleString('en'), req.method, req.url);
   // console.log(res);
-  const start = Date.now();
   // await console.log(res.locals);
-  await next();
-  const ms = Date.now() - start;
-  console.log('(Finished %sms)', ms);
+  next();
+  // const ms = Date.now() - start;
+  // console.log('(Finished %sms)', ms);
   // console.log(res.locals);
 });
 
 app.use('/items', require('./routes/items'));
-app.use('/order', require('./routes/order'));
-app.use('/orders', require('./routes/orders'));
+app.use('/contact', require('./routes/contactus'));
+// app.use('/orders', require('./routes/orders'));
+app.use('/id123tests', require('./routes/idTest'));
 app.use('/id123tests', require('./routes/idTest'));
 app.use('/checkout', require('./routes/paypal/checkout'));
 app.use('/cart', require('./routes/cart/cart'));
@@ -38,7 +41,7 @@ app.use('/admin', require('./routes/admin/admin'));
 
 
 //connect to db
-mongoose.connect(process.env.DB_LOCAL, {
+mongoose.connect(process.env.DB_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

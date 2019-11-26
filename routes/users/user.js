@@ -155,7 +155,7 @@ router.post('/register', async (req, res) => {
 router.get('/info', async (req, res) => {
   try {
     // console.log('<------ req.body ------>\n', req.body);
-    const user = await User.findOne({"username":req.user.username}, "username email firstName lastName birthday orders cart");
+    const user = await User.findOne({"username":req.user.username}, "username email firstName lastName birthday orders");
     res.status(200).json({
       success: true,
       info: user

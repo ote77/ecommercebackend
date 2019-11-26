@@ -41,7 +41,7 @@ const createOrder = async (items, username, res) => {
     username: username,
     items
   });
-  console.log('<------ validatedOrder ------>\n', validatedOrder);
+  // console.log('<------ validatedOrder ------>\n', validatedOrder);
   return validatedOrder;
 };
 
