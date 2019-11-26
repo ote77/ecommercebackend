@@ -28,7 +28,7 @@ switch(type) {
         break;
      case 'order':
      console.log('<------ order ------>');
-        tempName = 'order.ejs';
+        tempName = 'orderexample.ejs';
         title = 'Your Order Confirmation';
         break;
      default:
