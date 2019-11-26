@@ -11,7 +11,7 @@ const {
   addItemToWishlist
 } = require('../../utils/userMethods');
 const {
-  itemList
+  itemList,getWishList
 } = require('../../utils/itemMethods');
 const {
   getOrderById
@@ -173,14 +173,14 @@ router.get('/info', async (req, res) => {
 router.post('/wishlist', async (req, res) => {
   try {
     const user = await getUserByUsername(req.user.username);
-    console.log('<------ req.body ------>\n', req.body);
+    // console.log('<------ req.body ------>\n', req.body);
     user.wishlist = req.body;
+    const items = await itemList(user.wishlist);
     user.save();
     res.status(200).json({
       success: true,
-      message: 'Successfully add to wishlist'
+      cart: items
     });
-    console.log('<------ user.wishlist ------>\n', user.wishlist);
   } catch (err) {
     res.status(400).json({
       success: false,

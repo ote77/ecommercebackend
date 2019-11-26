@@ -27,6 +27,7 @@ paypal.configure({
 //make a payment
 router.post('/payment', auth, async (req, res) => {
   console.log('<------ Creating payment by %s ------>', req.user.username);
+  // console.log('<------ req.body ------>\n', req.body);
   var order;
   try {
     //req.body.user: shipping address.
@@ -36,7 +37,6 @@ router.post('/payment', auth, async (req, res) => {
     //PayPal process
     paypal.payment.create(order.payment, function(error, payment) {
       if (error) {
-
         console.log('<------ paypal.payment.create ------>\n', error.response.details);
       } else {
         console.log(payment.id, order.orderId);
@@ -45,7 +45,12 @@ router.post('/payment', auth, async (req, res) => {
             console.log('redirect link: ', link.href);
             //save payid to the order detail
             savePayid(order.orderId, payment.id);
-            res.redirect(link.href);
+            res.status(200).json({
+              success: true,
+              orderId: order.orderId,
+              link: link.href
+            });
+            // res.redirect(link.href);
             console.log('<------ redirected ------>');
           }
         }
@@ -80,8 +85,11 @@ router.post('/payment/:orderId', async (req, res) => {
       for (let link of payment.links) {
         if (link.rel === 'approval_url') {
           console.log('<Redirect link>: \n', link.href);
-          res.redirect(link.href);
-          console.log('<------ redirected ------>');
+          res.status(200).json({
+            success: true,
+            link: link.href
+          });
+          // console.log('<------ redirected ------>');
 
         }
       }
@@ -112,10 +120,10 @@ router.get('/process', async (req, res) => {
     } else {
       if (payment.state == 'approved') {
         recordSuccessPayment(req.query.paymentId, payment.transactions[0].related_resources[0].sale.id);
-        res.redirect('/approved');
-        console.log('payment completed successfully');
+        res.redirect('http://localhost:3000/success');
+        console.log('Payment completed successfully');
       } else {
-        res.redirect('/?denied');
+        res.redirect('http://localhost:3000/denied');
         console.warn('payment not successful');
       }
     }

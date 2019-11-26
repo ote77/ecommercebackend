@@ -54,6 +54,9 @@ const saveOrderToUser = async (username,orderId) => {
           $each:[orderId],
           $position: 0
         }
+      },
+      $set: {
+        cart:[]
       }
     });
     // console.log('<------ userWithOrderId ------>\n', userWithOrderId.username);

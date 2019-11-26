@@ -41,13 +41,16 @@ let orderDetail = {};
   // First user discount, can be changed to any type of discount
   // Or to userCoupons
   const firstOrder = await checkFirstOrder(username);
-  console.log('<------ firstOrder? ------>\n', firstOrder);
+  // console.log('<------ firstOrder? ------>\n', firstOrder);
   if (firstOrder) {
     discount=(subtotal*0.1).toFixed(2);
   }
   total = (subtotal-discount).toFixed(2);
-  console.log('<------ Amount details ------>');
-  console.log('Subtotal: %s, Discount: %s, Total: %s', subtotal, discount, total);
+  // console.log('<------ Amount details ------>');
+  // console.log('Subtotal: %s, Discount: %s, Total: %s', subtotal, discount, total);
+  user.address.recipient_name=user.firstName+' '+user.lastName;
+  // delete user.address.firstName;
+  // delete user.address.lastName;
   payment.transactions[0]={
     "amount": {
       "total": total,

@@ -36,23 +36,13 @@ app.use('/cart', require('./routes/cart/cart'));
 app.use('/user', require('./routes/users/user'));
 app.use('/admin', require('./routes/admin/admin'));
 
-// app.use('/posts',() => {
-//   console.log('This is a middleware');
-// });
-
-
-//routes
-
-
-
-
-
-
 
 //connect to db
-mongoose.connect(process.env.DB_CONNECTION, {
+mongoose.connect(process.env.DB_LOCAL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
   },
   () => console.log('Database connected\n Enjoy debugging\n       :)')
 );

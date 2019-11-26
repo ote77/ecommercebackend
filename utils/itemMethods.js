@@ -84,7 +84,24 @@ const itemList = async (items) => {
   return cart;
 };
 
+const getWishList = async (items) => {
+  for (var i in items) {
+    let stockItems;
+    try {
+      stockItems = await Items.findById(items[i].id);
+    } catch (e) {
+      console.log(e);
+    }
+    if (stockItems && stockItems.status=="Sale") {
+      items[i].price = stockItems.price;
+      items[i].name = stockItems.name;
+    } else {
+      items[i].status="Unavailable";
+    }
+  }
+};
+
 
 module.exports = {
-  itemList,getItemList,addNewItem,patchItem
+  itemList,getItemList,addNewItem,patchItem,getWishList
 };

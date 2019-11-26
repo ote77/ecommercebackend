@@ -8,7 +8,7 @@ const {
 
 router.post('/', auth, async (req, res) => {
   try {
-    console.log('<------ req.body ------>\n', req.body);
+    // console.log('<------ req.body ------>\n', req.body);
     const user = await User.findOne({"username":req.user.username});
     user.cart = req.body.cart;
     const items = await itemList(req.body.cart);
@@ -41,19 +41,4 @@ router.get('/', auth, async (req, res) => {
     });
   }
 });
-
-// router.get('/', async (req, res) => {
-//   try {
-//     console.log('<------ user ------>\n', user);
-//
-//     // console.log(items);
-//   } catch (err) {
-//     res
-//       .status(404)
-//       .json({
-//         success: false,
-//         message: 'Item could not be found'
-//       });
-//   }
-// });
 module.exports = router;

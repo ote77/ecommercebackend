@@ -5,13 +5,13 @@ const Order = require('../models/orders');
 
 
 const createOrder = async (items, username, res) => {
-  console.log(items);
+  // console.log(items);
   // Creat order in front or back?
   for (var i in items) {
-
+    delete items[i].status;
     let stockItems;
     try {
-      stockItems = await Items.findById(items[i]._id);
+      stockItems = await Items.findById(items[i].id);
     } catch (e) {
       console.log(e);
     }
@@ -41,6 +41,7 @@ const createOrder = async (items, username, res) => {
     username: username,
     items
   });
+  console.log('<------ validatedOrder ------>\n', validatedOrder);
   return validatedOrder;
 };
 
