@@ -28,12 +28,13 @@ let orderDetail = {};
   for (var i in orderDetail.items) {
     paymentItems[i] = {
       "name": orderDetail.items[i].name,
-      "description": orderDetail.description,
+      "description": orderDetail.items[i].description,
       "quantity": orderDetail.items[i].quantity,
       "price": orderDetail.items[i].price,
-      "sku": orderDetail.items[i]._id,
+      "sku": orderDetail.items[i].id,
       "currency": "AUD"
     };
+    console.log('<------ paymentItems[i] ------>\n', paymentItems[i]);
     subtotal += orderDetail.items[i].quantity * orderDetail.items[i].price;
     // console.log('<------ payment.transactions[0].amount.details.subtotal ------>\n', payment.transactions[0].amount.details.subtotal);
   }

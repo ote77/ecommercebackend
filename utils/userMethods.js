@@ -30,6 +30,7 @@ const getUserInfo = async (username) => {
       firstName:user.firstName,
       lastName:user.lastName,
       email:user.email,
+      address:user.address[0],
       birthday:user.birthday
     },
     orderList:orderList
@@ -59,10 +60,13 @@ const newAddress = async (username,address) => {
     // console.log('<------ user.address.length==0 ------>\n', user.address.length==0);
     if (user.address.length==0) {
       // console.log('<------ yes! ------>');
-      address.default=true;
+      user.address.push(address);
+      // address.default=true;
+    } else {
+      user.address[0]=address;
     }
+    console.log('<------ user.address ------>\n', user.address);
     // console.log('<------ address ------>\n', address);
-    user.address.push(address);
     // console.log('<------ user.address after ------>\n', user.address);
     user.save();
     return user;

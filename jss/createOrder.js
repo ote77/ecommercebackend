@@ -27,6 +27,8 @@ const createOrder = async (items, username, res) => {
       if (items[i].quantity <= stockItems.stock && stockItems.status=="Sale") {
         // console.log('<------ stock ------>\n', stockItems.stock);
         //Can be pushed here to the items with price and name.
+        items[i].description=stockItems.description;
+        console.log('<------ items[i].description ------>\n', items[i].description);
         // console.log(items[i]._id + ' available');
       } else {
         console.log('ID-' + items[i]._id + ' No enough stock');

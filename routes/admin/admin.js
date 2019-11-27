@@ -78,8 +78,6 @@ router.post('/register', async (req, res) => {
     try {
       const newUser = await user.save();
       res
-        .header('x-auth-token', token)
-        .header('access-control-expose-headers', 'x-auth-token')
         .json({ success: true, username: user_data.username, email:user_data.email,firstName:user_data.firstName,lastName:user_data.lastName });
       console.log('<------ new %s added ------>\n%s',newUser.user_type, newUser.username);
       // console.log('ITEM-[%s] %s added', newUser._id, newUser.username);
