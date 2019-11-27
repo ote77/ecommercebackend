@@ -4,4 +4,3 @@ test/
 .jshintrc
 ec
 ec.pub
-routes/paypal/paymentTemp.json
