@@ -13,7 +13,28 @@ const getUserByUsername = async (username) => {
 };
 
 const getUserInfo = async (username) => {
-  await User.findOne({"username":req.user.username});
+  const user = await User.findOne({"username":username});
+  let orderList=[];
+  for (var i in user.orders) {
+    let briefOrder = await getBriefOrder (user.orders[i]);
+    if (briefOrder.paid==true) {
+      briefOrder=briefOrder.toJSON();
+      briefOrder.total=briefOrder.amount.total;
+      delete briefOrder.amount;
+      delete briefOrder.paid;
+      orderList.push(briefOrder);
+    }
+  }
+  const info = {
+    user:{
+      firstName:user.firstName,
+      lastName:user.lastName,
+      email:user.email,
+      birthday:user.birthday
+    },
+    orderList:orderList
+  };
+  return info;
 };
 
 const checkFirstOrder = async (username) => {
@@ -127,5 +148,5 @@ const getCartListByuserName = async (username) => {
 module.exports = {
   getUserByUsername, newAddress, saveOrderToUser, setUsedFirstOrder,
   getOrderListByuserName, checkUsernameEmail,
-  checkFirstOrder, addItemToWishlist
+  checkFirstOrder, addItemToWishlist, getUserInfo
 };

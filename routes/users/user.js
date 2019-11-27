@@ -8,7 +8,8 @@ const {
   newAddress,
   getOrderListByuserName,
   checkUsernameEmail,
-  addItemToWishlist
+  addItemToWishlist,
+  getUserInfo
 } = require('../../utils/userMethods');
 const {
   itemList,getWishList
@@ -155,10 +156,10 @@ router.post('/register', async (req, res) => {
 router.get('/info', async (req, res) => {
   try {
     // console.log('<------ req.body ------>\n', req.body);
-    const user = await User.findOne({"username":req.user.username}, "username email firstName lastName birthday orders");
+    const info = await getUserInfo(req.user.username);
     res.status(200).json({
       success: true,
-      info: user
+      info
     });
   } catch (err) {
     console.log('<------ err ------>\n', err);
