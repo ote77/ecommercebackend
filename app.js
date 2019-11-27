@@ -45,7 +45,7 @@ mongoose.connect(process.env.DB_CONNECTION, {
     useCreateIndex: true,
     useFindAndModify: false
   },
-  () => console.log('Database connected\n Enjoy debugging\n       :)')
+  () => console.log('Database connected\n       :)')
 );
 
 // app.listen(4000, '0.0.0.0');

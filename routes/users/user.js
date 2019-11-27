@@ -261,6 +261,7 @@ router.get('/orders', async (req, res) => {
       orderList
     });
   } catch (err) {
+    console.log('<------ err ------>\n', err);
     res.status(404).json({
       success: false,
       message: "Order could not be found"

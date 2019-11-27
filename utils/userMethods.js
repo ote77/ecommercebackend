@@ -12,6 +12,10 @@ const getUserByUsername = async (username) => {
     return user;
 };
 
+const getUserInfo = async (username) => {
+  await User.findOne({"username":req.user.username});
+};
+
 const checkFirstOrder = async (username) => {
     const user = await User.findOne({"username":username}, "firstOrder");
     return user.firstOrder;
@@ -72,7 +76,13 @@ const getOrderListByuserName = async (username) => {
   let orderList=[];
   for (var i in user.orders) {
     let briefOrder = await getBriefOrder (user.orders[i]);
-    orderList.push(briefOrder);
+    if (briefOrder.paid==true) {
+      briefOrder=briefOrder.toJSON();
+      briefOrder.total=briefOrder.amount.total;
+      delete briefOrder.amount;
+      delete briefOrder.paid;
+      orderList.push(briefOrder);
+    }
   }
   return orderList;
 };

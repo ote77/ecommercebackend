@@ -1,5 +1,6 @@
 .env
 node_modules/
+test/
 .jshintrc
 ec
 ec.pub

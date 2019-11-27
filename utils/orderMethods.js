@@ -12,8 +12,9 @@ const getBriefOrder = async (orderId) => {
   // console.log('<------ getBriefOrder ------>\n', orderId);
   var opt={
     date:1,
-    items:1,
+    // items:1,
     status:1,
+    amount:1,
     paid:1
   };
   const briefOrder = await Order.findById(orderId, opt);
