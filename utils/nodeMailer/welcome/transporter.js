@@ -6,8 +6,9 @@ const path = require('path');
 require('dotenv/config');
 
 let transporter = nodemailer.createTransport({
-  service: 'Hotmail',
-  port: 587,
+  name: 'Bluehost',
+  host: 'mail.flawlesstrading.com.au',
+  port: 465,
   secureConnection: true,
   auth: {
     user: process.env.EMAIL_USER,
@@ -40,7 +41,7 @@ const template = ejs.compile(fs.readFileSync(path.resolve(__dirname, tempName), 
 const html = template(data);
 
 let mailOptions = {
-  from: '"Ote" <oty1994@hotmail.com>', // sender address
+  from: '"Flawless Team" <info@flawlesstrading.com.au>', // sender address
   to: email, // list of receivers
   subject: title, // Subject line
   // text: 'Hello world?', // plain text body
@@ -61,7 +62,6 @@ transporter.sendMail(mailOptions, (error, info) => {
 //send email to Admin.
 
 const sendToAdmin = (data,type) => {
-
   let tempName;
   let title;
 switch(type) {
@@ -84,7 +84,7 @@ const template = ejs.compile(fs.readFileSync(path.resolve(__dirname, tempName), 
 const html = template(data);
 
 let mailOptions = {
-  from: '"Ote" <oty1994@hotmail.com>', // sender address
+  from: '"Flawless" <info@flawlesstrading.com.au>', // sender address
   to: 'ooottee@gmail.com', // To admin.
   subject: title, // Subject line
   // text: 'Hello world?', // plain text body
