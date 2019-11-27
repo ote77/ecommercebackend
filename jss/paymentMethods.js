@@ -4,7 +4,7 @@ const {
   createOrder
 } = require('./createOrder');
 const {
-  saveOrderToUser, checkFirstOrder, setUsedFirstOrder
+  saveOrderToUser, checkFirstOrder, setUsedFirstOrder, newAddress
 } = require('../utils/userMethods');
 const {mailService} = require('../utils/nodeMailer/welcome/transporter');
 
@@ -34,7 +34,6 @@ let orderDetail = {};
       "sku": orderDetail.items[i].id,
       "currency": "AUD"
     };
-    console.log('<------ paymentItems[i] ------>\n', paymentItems[i]);
     subtotal += orderDetail.items[i].quantity * orderDetail.items[i].price;
     // console.log('<------ payment.transactions[0].amount.details.subtotal ------>\n', payment.transactions[0].amount.details.subtotal);
   }
@@ -50,6 +49,7 @@ let orderDetail = {};
   // console.log('<------ Amount details ------>');
   // console.log('Subtotal: %s, Discount: %s, Total: %s', subtotal, discount, total);
   user.address.recipient_name=user.firstName+' '+user.lastName;
+  newAddress(username,user.address);
   // delete user.address.firstName;
   // delete user.address.lastName;
   payment.transactions[0]={
