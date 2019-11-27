@@ -6,13 +6,16 @@ const path = require('path');
 require('dotenv/config');
 
 let transporter = nodemailer.createTransport({
-  name: 'Bluehost',
+  name: 'flawlesstrading',
   host: 'mail.flawlesstrading.com.au',
   port: 465,
   secureConnection: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD,
+  },
+  tls: {
+  rejectUnauthorized: false
   }
 });
 
